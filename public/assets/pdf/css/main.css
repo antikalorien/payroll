@@ -1,0 +1,338 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container{
+    min-height: 100vh;
+}
+
+.container .header-content{
+    width: 100%;
+    height: 280px;
+    top: 0;
+    left: 0;
+ 
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 48px 32px 32px 32px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-content .heading-text{
+    color: #ffffff;
+    font-size: 52px;
+    font-weight: 700;
+}
+
+.header-content .text-crop{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.text-crop h2{
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.text-crop p{
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.container .profile-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 32px;
+}
+
+.profile-content .profile-detail-1{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.profile-detail-1 h1{
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.profile-detail-1 span{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.detail-list{
+    display: flex;
+    align-items: flex-start;
+}
+
+.detail-list .list-1{
+    width: 160px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.detail-list .list-2{
+    padding-left: 10px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.container .main-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content .heding-text{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #45AD8D;
+}
+
+.main-content .content-netto{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: #45AD8D;
+    margin-bottom: 20px;
+}
+
+.main-content .content-netto .wrapper-content{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px;
+}
+
+.wrapper-content h1{
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    margin-right: 20px;
+}
+
+.main-content .heding-text h1{
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.main-content .content-detail{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    margin: 20px;
+}
+
+.content-detail .detail{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+.detail .list-detail{
+    display: flex;
+    align-items: flex-start;
+}
+
+.detail .list-detail-av{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.list-detail .list-1{
+    width: 120px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.list-detail .list-3{
+    width: 200px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.list-detail-av .list-1{
+    width: 120px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.list-detail-av .list-3{
+    width: 200px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.list-detail .list-2{
+    margin-left: 10px;
+    width: 32px;
+    font-size: 16px;
+    font-weight: 400;
+}
+.list-detail-av .list-2{
+    margin-left: 10px;
+    width: 32px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.container .content-note{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.container .content-note .note-detail{
+    width: 90%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.note-detail h1{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.note-detail span{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/*Responsive Strat*/
+@media(max-width: 480px){
+    .container .header-content {
+        height: 340px;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 32px 32px 0 32px;
+    }
+
+    .container .profile-content {
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 0 20px 20px 20px;
+    }
+
+    .main-content .content-detail {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .main-content .heding-text h1 {
+        padding: 0 20px;
+    }
+
+    .main-content .content-netto {
+        justify-content: center;
+    }
+}
+
+@media(min-width: 481px) and (max-width: 575px){
+    .container .header-content {
+        height: 280px;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 32px 32px 0 32px;
+    }
+
+    .container .profile-content {
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 0 20px 20px 20px;
+    }
+
+    .main-content .content-detail {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .main-content .heding-text h1 {
+        padding: 0 20px;
+    }
+
+    .main-content .content-netto {
+        justify-content: center;
+    }
+}
+
+@media(min-width: 576px) and (max-width: 767px){
+    .container .header-content {
+        height: 280px;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 32px 32px 0 32px;
+    }
+
+    .container .profile-content {
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 0 20px 20px 20px;
+    }
+
+    .main-content .content-detail {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .main-content .heding-text h1 {
+        padding: 0 20px;
+    }
+
+    .main-content .content-netto {
+        justify-content: center;
+    }
+}
+
+@media(min-width: 768px) and (max-width: 991px){
+    .container .header-content {
+        height: 280px;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 32px 32px 0 32px;
+    }
+
+    .container .profile-content {
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        padding: 0 20px 20px 20px;
+    }
+}
+/*Responsive End*/
