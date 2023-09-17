@@ -17,8 +17,7 @@ class karyawan_updateUsia extends Command
      *
      * @var string
      */
-    
-     protected $signature = 'karyawan:usia';
+    protected $signature = 'karyawan:usia';
 
     /**
      * The console command description.
@@ -64,7 +63,7 @@ class karyawan_updateUsia extends Command
                     'usia' => $_usia,
                 ]);
 
-                // update bpjs Kesehatan Usia > 56 Tahun
+                // update bpjs Kesehatan Usia > 56 Tahun JP
                 $_idBPJSJP = ['VR-015','VR-016'];
                 if($_usia > 56)
                 {
@@ -116,6 +115,7 @@ class karyawan_updateUsia extends Command
                             ->update([
                                 'nominal' => $v->nominal
                             ]);
+                        
                         }
 
                     }
@@ -127,11 +127,14 @@ class karyawan_updateUsia extends Command
                     $activity->module = 'Crone Job'; 
                     $activity->keterangan = 'Update BPJS JP Usia > 56 th : '.$x->id_absen;
                     $activity->pic = 'Crone Job';
-                    $activity->save();                    
+                    $activity->save();
+                    
                 }
+
             }
     
             DB::commit();
+          
         } catch (\Exception $ex) {
             DB::rollBack();
             return response()->json($ex);

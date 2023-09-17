@@ -262,13 +262,14 @@ class c_penggajian_upahKaryawan extends Controller
         $_statusKaryawan = $request->statusSkemaGaji;
         $_tipeGaji = $request->skemaGaji;
         try {
-            DB::beginTransaction(); 
+            DB::beginTransaction();
 
                     if($variabel!='')
                     {
                         $keterangan='-';
                         foreach ($variabel as $x => $val) {
 
+                            // Update Upah Karyawan Master Variable
                             $c_karyawan = new c_classPenggajian;
                             $_status = $c_karyawan->updateUpahkaryawanVariablePeriode($_idPeriode,$_idKaryawan,$x,$val); 
                   
@@ -286,29 +287,29 @@ class c_penggajian_upahKaryawan extends Controller
                         $c_class = new c_classHistory;
                         $c_class = $c_class->insertHistory($_requestValue);   
                     }
-
-                      // Update Upah Karyawan Master Periode
-                        $c_penggajian = new c_classPenggajian;
-                        $_status = $c_penggajian->updateUpahkaryawanMasterPeriode($_idPeriode,$_idKaryawan,$_tipeBpjs,$_doj,$_tipeKontrak,$_noRekening,$_statusKaryawan,$_tipeGaji); 
-
-                        // insert history
-                        $_keterangan = 'Update Upah Karyawan Master Penggajian | ID Periode : '. $_idPeriode.
-                        ' ID Karyawan : '. $_idKaryawan. 
-                        ' Tipe BPJS : '. $_tipeBpjs.
-                        ' Tanggal Bergabung : '. $_doj.
-                        ' Tipe Kontrak : '. $_tipeKontrak.
-                        ' No Rekening : '. $_noRekening.
-                        ' Status Karyawan : '. $_statusKaryawan.
-                        ' Tipe Gaji : '. $_tipeGaji;
+                    
+                       // Update Upah Karyawan Master Periode
+                         $c_penggajian = new c_classPenggajian;
+                         $_status = $c_penggajian->updateUpahkaryawanMasterPeriode($_idPeriode,$_idKaryawan,$_tipeBpjs,$_doj,$_tipeKontrak,$_noRekening,$_statusKaryawan,$_tipeGaji); 
+            
+                         // insert history
+                         $_keterangan = 'Update Upah Karyawan Master Penggajian | ID Periode : '. $_idPeriode.
+                         ' ID Karyawan : '. $_idKaryawan. 
+                         ' Tipe BPJS : '. $_tipeBpjs.
+                         ' Tanggal Bergabung : '. $_doj.
+                         ' Tipe Kontrak : '. $_tipeKontrak.
+                         ' No Rekening : '. $_noRekening.
+                         ' Status Karyawan : '. $_statusKaryawan.
+                         ' Tipe Gaji : '. $_tipeGaji;
                                                     
-                        $_requestValue['tipe'] = 0;
-                        $_requestValue['menu'] ='Penggajian';
-                        $_requestValue['module'] = 'Upah Karyawan';
-                        $_requestValue['keterangan'] = $_keterangan;
-                        $_requestValue['pic'] = $userLogin;
-
-                        $c_class = new c_classHistory;
-                        $c_class = $c_class->insertHistory($_requestValue);  
+                         $_requestValue['tipe'] = 0;
+                         $_requestValue['menu'] ='Penggajian';
+                         $_requestValue['module'] = 'Upah Karyawan';
+                         $_requestValue['keterangan'] = $_keterangan;
+                         $_requestValue['pic'] = $userLogin;
+            
+                         $c_class = new c_classHistory;
+                         $c_class = $c_class->insertHistory($_requestValue);  
 
                 DB::commit();
                 $result = 'success';

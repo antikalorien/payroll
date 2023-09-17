@@ -331,7 +331,7 @@
                             showConfirmButton: false,
                             timer: 1000,
                             onClose: function() {
-                                window.location = '{{ url()->previous() }}';
+                                   window.location = '{{ url()->previous() }}';
                             }
                         });
                     } else {

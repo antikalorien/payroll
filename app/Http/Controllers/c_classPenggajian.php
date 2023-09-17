@@ -381,7 +381,7 @@ class c_classPenggajian extends Controller
                 // get rumus (UPAH TETAP) code GS-001
                 $c_classRumus = new c_classRumus;
                 $_nominal = $c_classRumus->getRumusPenggajianPeriode('GS-001',$_idKaryawan,$_idPeriode); 
-                
+            
                 foreach($varBpjs as $x)
                 {
                         $karGroupSubVarBpjs = new karyawan_group_sub_variable_bpjs();
@@ -410,7 +410,7 @@ class c_classPenggajian extends Controller
                             $_val_bpjs = ($_nominal*($x->presentase/100));
                         }
                         
-    
+                        // master karyawan group sub variable 
                         DB::table('gaji_karyawan_sub_variable')
                         ->where('id_periode','=',$_idPeriode)
                         ->where('id_karyawan','=',$_idKaryawan)

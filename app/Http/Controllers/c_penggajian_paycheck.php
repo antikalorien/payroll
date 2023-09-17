@@ -46,7 +46,7 @@ class c_penggajian_paycheck extends Controller
             'departemen.departemen as id_departemen',
             'departemen_sub.sub_departemen as subDepartemen',
             'users.pos as pos',
-            'grade.level as grade',
+            'users.grade as grade',
             'users.doj as doj',
             'gaji_karyawan.id_karyawan as id_absen',
             'gaji_karyawan.nik as username',
@@ -79,7 +79,6 @@ class c_penggajian_paycheck extends Controller
             ->join('users','users.id_absen','=','gaji_karyawan.id_karyawan')
             ->join('departemen','departemen.id_dept','=','gaji_karyawan.id_departemen')
             ->join('departemen_sub','departemen_sub.id_subDepartemen','=','gaji_karyawan.id_departemen_sub')
-            ->join('grade','grade.id_grade','users.grade')
             ->where('gaji_karyawan.id_periode',$idPeriode)
             ->get();
 
