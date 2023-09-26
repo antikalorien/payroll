@@ -171,7 +171,6 @@ class c_classPenggajian extends Controller
     }
 
     // update Data Master Upah Karyawan Periode
-    // -->> update juga Variable BPJS Karyawan Master
     public function updateUpahkaryawanMasterPeriode($_idPeriode,$_idKaryawan,$_tipeBpjs,$_tanggalBergabung,$_tipeKontrak,$_noRekening,$_statusKaryawan,$_tipeGaji)
     {
         $userLogin = request()->session()->get('username');
@@ -195,21 +194,19 @@ class c_classPenggajian extends Controller
                         'skema_gaji'=> $_tipeGaji
                     ]);
 
-                    DB::table('users')
-                    ->where('id_absen','=',$_idKaryawan)
-                    ->update([
-                        'tipe_kontrak' => $_tipeKontrak,
-                        'doj' =>$_tanggalBergabung,
-                        'masa_kerja' => $_masaKerja,
-                        'no_rekening' => $_noRekening,
-                        'tipe_bpjs' => $_tipeBpjs,
-                        'status_skema_gaji'=> $_statusKaryawan,
-                        'skema_gaji'=> $_tipeGaji
-                    ]);
+                    $this->updateVariableBPJSKaryawanPeriode($_idPeriode,$_idKaryawan, $_tipeBpjs);
 
-                // update variable BPJS Karayawan Master
-                $this->updateVariableBPJSKaryawanPeriode($_idPeriode,$_idKaryawan, $_tipeBpjs);
-                
+                    // DB::table('users')
+                    // ->where('id_absen','=',$_idKaryawan)
+                    // ->update([
+                    //     'tipe_kontrak' => $_tipeKontrak,
+                    //     'doj' =>$_tanggalBergabung,
+                    //     'masa_kerja' => $_masaKerja,
+                    //     'no_rekening' => $_noRekening,
+                    //     'tipe_bpjs' => $_tipeBpjs,
+                    //     'status_skema_gaji'=> $_statusKaryawan,
+                    //     'skema_gaji'=> $_tipeGaji
+                    // ]);                
             $result='success'; 
             DB::commit();   
             return $result;
@@ -231,83 +228,83 @@ class c_classPenggajian extends Controller
     }
 
     // update Variable BPJS Karyawan Master
-    public function updateVariableBPJSKaryawanMaster($_idKaryawan, $_tipeBpjs)
-    {
-        try
-        {
-            DB::beginTransaction();
-                // delete group_sub_variable
-                DB::table('karyawan_group_sub_variable_bpjs')->where('id_karyawan','=',$_idKaryawan)->delete();
+    // public function updateVariableBPJSKaryawanMaster($_idKaryawan, $_tipeBpjs)
+    // {
+    //     try
+    //     {
+    //         DB::beginTransaction();
+    //             // delete group_sub_variable
+    //             DB::table('karyawan_group_sub_variable_bpjs')->where('id_karyawan','=',$_idKaryawan)->delete();
         
-                // get variable bpjs
-                $varBpjs = DB::table('grouping_sub_variable_bpjs')
-                ->select('id_variable_bpjs as idVariableBpjs','id_bpjs as idBpjs',
-                'bpjs as bpjs','id_variable as idVariable','variable as variable','tipe_potongan as tipePotongan','tot_presentase as totPresentase',
-                'presentase as presentase','max_value as maxValue','max_value_nominal as maxValueNominal','nominal as nominal'
-                )
-                ->where('tipe_potongan','=',$_tipeBpjs)
-                ->where('isDell','=', '1')
-                ->get();
+    //             // get variable bpjs
+    //             $varBpjs = DB::table('grouping_sub_variable_bpjs')
+    //             ->select('id_variable_bpjs as idVariableBpjs','id_bpjs as idBpjs',
+    //             'bpjs as bpjs','id_variable as idVariable','variable as variable','tipe_potongan as tipePotongan','tot_presentase as totPresentase',
+    //             'presentase as presentase','max_value as maxValue','max_value_nominal as maxValueNominal','nominal as nominal'
+    //             )
+    //             ->where('tipe_potongan','=',$_tipeBpjs)
+    //             ->where('isDell','=', '1')
+    //             ->get();
         
-                $_nominal=0;
-                // get rumus (UPAH TETAP) code GS-001
-                $c_classRumus = new c_classRumus;
-                $_nominal = $c_classRumus->getRumus('GS-001',$_idKaryawan); 
+    //             $_nominal=0;
+    //             // get rumus (UPAH TETAP) code GS-001
+    //             $c_classRumus = new c_classRumus;
+    //             $_nominal = $c_classRumus->getRumus('GS-001',$_idKaryawan); 
         
-                foreach($varBpjs as $x)
-                {
-                        $karGroupSubVarBpjs = new karyawan_group_sub_variable_bpjs();
-                        $karGroupSubVarBpjs->id_karyawan = $_idKaryawan;
-                        $karGroupSubVarBpjs->id_variable_bpjs = $x->idVariableBpjs; 
-                        $karGroupSubVarBpjs->id_variable = $x->idVariable; 
-                        $karGroupSubVarBpjs->variable = $x->variable; 
-                        $karGroupSubVarBpjs->tipe_potongan = $x->tipePotongan; 
+    //             foreach($varBpjs as $x)
+    //             {
+    //                     $karGroupSubVarBpjs = new karyawan_group_sub_variable_bpjs();
+    //                     $karGroupSubVarBpjs->id_karyawan = $_idKaryawan;
+    //                     $karGroupSubVarBpjs->id_variable_bpjs = $x->idVariableBpjs; 
+    //                     $karGroupSubVarBpjs->id_variable = $x->idVariable; 
+    //                     $karGroupSubVarBpjs->variable = $x->variable; 
+    //                     $karGroupSubVarBpjs->tipe_potongan = $x->tipePotongan; 
                     
-                        $karGroupSubVarBpjs->tot_presentase = $x->totPresentase; 
-                        $karGroupSubVarBpjs->presentasi = $x->presentase; 
-                        $karGroupSubVarBpjs->max_value = $x->maxValue; 
-                        $karGroupSubVarBpjs->max_value_nominal = $x->maxValueNominal; 
-                        // nominal upah tetap
-                        $karGroupSubVarBpjs->nominal = $_nominal; 
-                        $karGroupSubVarBpjs->save();
+    //                     $karGroupSubVarBpjs->tot_presentase = $x->totPresentase; 
+    //                     $karGroupSubVarBpjs->presentasi = $x->presentase; 
+    //                     $karGroupSubVarBpjs->max_value = $x->maxValue; 
+    //                     $karGroupSubVarBpjs->max_value_nominal = $x->maxValueNominal; 
+    //                     // nominal upah tetap
+    //                     $karGroupSubVarBpjs->nominal = $_nominal; 
+    //                     $karGroupSubVarBpjs->save();
                       
-                        // nominal bpjs
-                        $_val_bpjs=0;
-                        if($_nominal > $x->maxValue)
-                        {
-                            $_val_bpjs=$x->maxValueNominal;
-                        }
-                        else
-                        {
-                            $_val_bpjs = ($_nominal*($x->presentase/100));
-                        }
+    //                     // nominal bpjs
+    //                     $_val_bpjs=0;
+    //                     if($_nominal > $x->maxValue)
+    //                     {
+    //                         $_val_bpjs=$x->maxValueNominal;
+    //                     }
+    //                     else
+    //                     {
+    //                         $_val_bpjs = ($_nominal*($x->presentase/100));
+    //                     }
                         
-                        // master karyawan group sub variable 
-                        DB::table('karyawan_group_sub_variable')
-                        ->where('id_karyawan','=',$_idKaryawan)
-                        ->where('id_variable','=',$x->idVariable)
-                        ->update([
-                            'nominal' => $_val_bpjs
-                        ]);
-                }
+    //                     // master karyawan group sub variable 
+    //                     DB::table('karyawan_group_sub_variable')
+    //                     ->where('id_karyawan','=',$_idKaryawan)
+    //                     ->where('id_variable','=',$x->idVariable)
+    //                     ->update([
+    //                         'nominal' => $_val_bpjs
+    //                     ]);
+    //             }
 
-                DB::commit();
-                return 'success';
-            } catch (\Exception $ex) {
-                DB::rollBack();
-                // insert history
-                $_keterangan = 'Error--updateVariableBPJSKaryawanMaster--'.$ex;
-                $_requestValue['tipe'] = 0;
-                $_requestValue['menu'] ='Penggajian';
-                $_requestValue['module'] = 'Class Penggajian';
-                $_requestValue['keterangan'] = $_keterangan;
-                $_requestValue['pic'] = '-';
+    //             DB::commit();
+    //             return 'success';
+    //         } catch (\Exception $ex) {
+    //             DB::rollBack();
+    //             // insert history
+    //             $_keterangan = 'Error--updateVariableBPJSKaryawanMaster--'.$ex;
+    //             $_requestValue['tipe'] = 0;
+    //             $_requestValue['menu'] ='Penggajian';
+    //             $_requestValue['module'] = 'Class Penggajian';
+    //             $_requestValue['keterangan'] = $_keterangan;
+    //             $_requestValue['pic'] = '-';
 
-                $c_class = new c_classHistory;
-                $c_class = $c_class->insertHistory($_requestValue);  
-            return response()->json($ex);
-        }                  
-    }
+    //             $c_class = new c_classHistory;
+    //             $c_class = $c_class->insertHistory($_requestValue);  
+    //         return response()->json($ex);
+    //     }                  
+    // }
 
     // update Data Bpsj Karyawan Periode
     // -->> update juga Variable BPJS Karyawan Periode
@@ -336,7 +333,7 @@ class c_classPenggajian extends Controller
                 $this->updateVariableBPJSKaryawanPeriode($_idPeriode,$_idKaryawan, $_tipeBpjs);
 
                 // update vairalbe BPJS Karyawan Master
-                $this->updateVariableBPJSKaryawanMaster($_idPeriode,$_idKaryawan, $_tipeBpjs);
+                // $this->updateVariableBPJSKaryawanMaster($_idPeriode,$_idKaryawan, $_tipeBpjs);
                 
             $result='success'; 
             DB::commit();   

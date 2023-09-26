@@ -132,9 +132,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <!-- <div class="card-footer text-center">
-                            <button type="submit" class="btn btn-warning">Edit Profile</button>
-                        </div> -->
+                  
                         <hr>
                         @if($data['profile'] !== null)
                             <div class="alert alert-info" >
@@ -147,99 +145,6 @@
                             </div>
                         @endif
                         </div>
-       
-                        <!-- <div class="card-body">
-                            <div class="row">
-                                <div class="col-6">
-
-                                    <div class="form-group">
-                                        <label for="iEmail">Email</label>
-                                        <input type="email" id="iEmail" name="email" class="form-control" value="{{ $data['user']->email }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="iNoTelp">No Telp</label>
-                                        <input type="text" id="iNoTelp" name="noHp" class="form-control" value="{{ $data['user']->noHp }}">
-                                    </div>
-
-                                 
-
-                                    <div class="form-group">
-                                        <label for="iTempatLahir">Tempat Lahir</label>
-                                        <input type="text" id="iTempatLahir" name="tempatLahir" class="form-control" value="{{ $data['profile']->tempat_lahir ?? '' }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="iTglLahir">Tanggal Lahir</label>
-                                        <input type="text" id="iTglLahir" name="tanggalLahir" class="form-control" value="{{ $data['profile']->tgl_lahir ?? '' }}">
-                                    </div>
-
-                                    <div class="form-group" >
-                                        <label for="iJenisKelamin">Jenis Kelamin</label>
-                                        <select class="form-control" id="iJenisKelamin" name="jenisKelamin">
-                                            <option value="">Pilih Jenis Kelamin</option>
-                                            <option value="l">Laki-laki</option>
-                                            <option value="p">Perempuan</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="iAlamat">Alamat</label>
-                                        <textarea class="form-control" id="iAlamat" name="alamat" rows="4" style="height: 137px"></textarea>
-                                    </div>
-
-                                </div>
-                                <div class="col-6">
-                
-
-                                    <div class="form-group">
-                                        <label for="iAgama">Agama</label>
-                                        <select class="form-control" id="iAgama">
-                                            <option value="">Pilih Agama</option>
-                                            <option value="islam">Islam</option>
-                                            <option value="kristen">Kristen</option>
-                                            <option value="katolik">Katolik</option>
-                                            <option value="hindu">Hindu</option>
-                                            <option value="budha">Buddha</option>
-                                            <option value="khonghucu">Khonghucu</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="iNoKtp">No KTP</label>
-                                        <input type="text" id="iNoKtp" name="no_ktp" class="form-control" value="{{ $data['profile']->no_ktp ?? '' }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="iTingkatPendidikan">Tingkat Pendidikan</label>
-                                        <select class="form-control" id="iTingkatPendidikan">
-                                            <option value="">Pilih Pendidikan Terakhir</option>
-                                            <option value="sd">SD</option>
-                                            <option value="smp">SMP</option>
-                                            <option value="sma/smk">SMA / SMK</option>
-                                            <option value="d3">D3</option>
-                                            <option value="s1">S1</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="iJurusan">Jurusan</label>
-                                        <input type="text" id="iJurusan" name="jurusan" class="form-control" value="{{ $data['profile']->jurusan ?? '' }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="iKeterangan">Keterangan Tambahan</label>
-                                        <input type="text" id="iKeterangan" name="keterangan" class="form-control" value="{{ $data['profile']->keterangan ?? '' }}">
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div> -->
-                        <!-- <div class="card-footer text-right">
-             
-                            <button type="button" id="btnEdit" class="btn btn-primary">
-                                    <i class="fas fa-pencil-alt mr-2"></i>Simpan Data Karyawan
-                                </button>
-                        </div> -->   
                 </div>
             </div>
             <div class="col-12 col-md-12 col-lg-7">
@@ -267,9 +172,22 @@
                                             @else
                                             <input type="checkbox" name="permission[]" class="custom-control-input" id="permission_{{ $m['id'] }}" value="{{ $m['id'] }}">
                                             @endif
+                                            
                                             <label class="custom-control-label" >{{ $m['variable'] }}</label>
+
                                             @if($i_ <= 7)  
+                                             <!-- disable variable tidak diperlukan -->
+                                             @if($m['id_variable']=='VR-006')
+                                            <input name="variabels[{{ $m['id_variable'] }}]" type="text" class="form-control" id="{{ $m['id_variable'] }}" value="{{ number_format($m['nominal']) }}"readOnly >
+                                            @else
                                             <input name="variabel[{{ $m['id_variable'] }}]" type="text" class="form-control" id="{{ $m['id_variable'] }}" value="{{ $m['nominal'] }}" >
+                                            
+                                            @endif
+                                           
+                                            @if($m['id_variable']=='VR-007' || $m['id_variable']=='VR-012')
+                                            <textarea name="variabel[ket-{{ $m['id_variable'] }}]" class="form-control" id="ket-{{ $m['id_variable'] }}" style="height: 137px" placeholder="Keterangan...">{{ $m['keterangan'] }}</textarea>
+                                            @endif
+                                           
                                             @else
                                             <input name="variabels[{{ $m['id_variable'] }}]" type="text" class="form-control" id="{{ $m['id_variable'] }}" value="{{ number_format($m['nominal']) }}"readOnly >
                                             @endif

@@ -171,8 +171,17 @@
                                             <input type="checkbox" name="permission[]" class="custom-control-input" id="permission_{{ $m['id'] }}" value="{{ $m['id'] }}">
                                             @endif
                                             <label class="custom-control-label" >{{ $m['variable'] }}</label>
-                                            @if($i_ <= 10)  
+                                            @if($i_ <= 10) 
+                                            
+                                              <!-- disable variable tidak diperlukan -->
+                                              @if($m['id_variable']=='VR-006' || $m['id_variable']=='VR-004' || $m['id_variable']=='VR-010' || $m['id_variable']=='VR-011')
+                                            <input name="variabels[{{ $m['id_variable'] }}]" type="text" class="form-control" id="{{ $m['id_variable'] }}" value="{{ number_format($m['nominal']) }}"readOnly >
+                                            @else
                                             <input name="variabel[{{ $m['id_variable'] }}]" type="text" class="form-control" id="{{ $m['id_variable'] }}" value="{{ $m['nominal'] }}" >
+                                            
+                                            @endif
+                                            
+                                            <!-- <input name="variabel[{{ $m['id_variable'] }}]" type="text" class="form-control" id="{{ $m['id_variable'] }}" value="{{ $m['nominal'] }}" > -->
                                             @if($m['id_variable']=='VR-007' || $m['id_variable']=='VR-012')
                                             <textarea name="variabel[ket-{{ $m['id_variable'] }}]" class="form-control" id="ket-{{ $m['id_variable'] }}" style="height: 137px" placeholder="Keterangan...">{{ $m['keterangan'] }}</textarea>
                                             @endif

@@ -111,7 +111,7 @@ class c_master_upahKaryawan extends Controller
 
             $dtMenu = DB::table('grouping_sub_variable')
             ->select('grouping_sub_variable.id as id', 'grouping_sub_variable.id_sub_group as idSubGroup','grouping_sub_variable.id_variable as idVariable',
-            'grouping_sub_variable.variable as variable','karyawan_group_sub_variable.nominal as nominal')
+            'grouping_sub_variable.variable as variable','karyawan_group_sub_variable.nominal as nominal','karyawan_group_sub_variable.keterangan as keterangan')
             ->join('karyawan_group_sub_variable','karyawan_group_sub_variable.id_variable','grouping_sub_variable.id_variable')
             ->where('karyawan_group_sub_variable.id_karyawan',$data['user']->idAbsen)
             ->get();
@@ -124,7 +124,8 @@ class c_master_upahKaryawan extends Controller
                         'id_group' => $m->idSubGroup,
                         'id_variable' => $m->idVariable,
                         'variable' => $m->variable,
-                        'nominal' =>$m->nominal
+                        'nominal' =>$m->nominal,
+                        'keterangan' =>$m->keterangan
                     ];
                 }
      
@@ -158,7 +159,7 @@ class c_master_upahKaryawan extends Controller
   
         try {
             DB::beginTransaction();
-
+          
              // Update Upah Karyawan Master
              $c_karyawan = new c_classKaryawan;
              $_status = $c_karyawan->updateUpahkaryawanMaster($_idKaryawan,$_tipeBpjs,$_doj,$_tipeKontrak,$_noRekening,$_statusKaryawan,$_tipeGaji); 

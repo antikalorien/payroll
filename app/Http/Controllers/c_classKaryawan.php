@@ -28,7 +28,7 @@ class c_classKaryawan extends Controller
             $toDate = Carbon::parse($date);
             $fromDate = Carbon::parse($tanggalMasuk);
             $bulan = $toDate->diffInMonths($fromDate);
-        return $bulan;
+            return $bulan;
     }
 
     // get Usia Karyawan
@@ -39,7 +39,7 @@ class c_classKaryawan extends Controller
             $toDate = Carbon::parse($date);
             $fromDate = Carbon::parse($tanggalLahir);
             $tahun = $toDate->diffInYears($fromDate);
-        return $tahun;
+            return $tahun;
     }
 
     // add user karyawan 
