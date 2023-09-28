@@ -23,7 +23,18 @@ use App\User;
 class c_master_upahKaryawan extends Controller
 {
     public function index() {
-        return view('dashboard.master-data.upah-karyawan.baru');
+          // get ID Periode
+          $c_classPenggajian = new c_classPenggajian;
+          $_val = $c_classPenggajian->getPeriodeBerjalan(); 
+          if( is_null($_val))
+          {
+          // nothing
+          return view('dashboard.master-data.upah-karyawan.baru');
+          }
+          else
+          {
+            return view('errors.403');
+          }
     }
 
     public function data() {
@@ -252,7 +263,4 @@ class c_master_upahKaryawan extends Controller
             return response()->json([$ex]);
         }
 	}
-
-
-
 }

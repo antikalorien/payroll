@@ -64,8 +64,7 @@
                                 <th>BPJS-Kesehatan</th>
                                 <th>BPJS-TK</th>
                                 <th>BPJS-JP</th>
-                                <th>Simpanan Koperasi</th>
-                                <th>Hutang Karyawan</th>
+                   
                             </tr>
                             <tfoot >
                                     <tr>
@@ -100,8 +99,7 @@
                                         <th><input style="text-align: right;width:150px" class="form-control" id="iTotBpjsKes" type="text" name="totBpjsKes"  readonly></th>
                                         <th><input style="text-align: right;width:150px" class="form-control" id="iTotBpjsTk" type="text" name="totBpjsTk"  readonly></th>
                                         <th><input style="text-align: right;width:150px" class="form-control" id="iTotBpjsJp" type="text" name="totBpjsJp"  readonly></th>
-                                        <th><input style="text-align: right;width:150px" class="form-control" id="iTotSimpananKoperasi" type="text" name="totSimpananKoperasi"  readonly></th>
-                                        <th><input style="text-align: right;width:150px" class="form-control" id="iTotHutangKaryawan" type="text" name="totHutangKaryawan"  readonly></th>
+  
                                     </tr>
                                     </tfoot>
                             </thead>
@@ -169,8 +167,6 @@
         let iTotBpjsKes = document.getElementById("iTotBpjsKes");
         let iTotBpjsTk = document.getElementById("iTotBpjsTk");
         let iTotBpjsJp = document.getElementById("iTotBpjsJp");
-        let iTotSimpananKoperasi = document.getElementById("iTotSimpananKoperasi");
-        let iTotHutangKaryawan = document.getElementById("iTotHutangKaryawan");
 
         $(document).ready(function () {
                
@@ -218,8 +214,7 @@
                     iTotBpjsKes.value =  xhr.responseJSON.total["iTotBpjsKes"];
                     iTotBpjsTk.value =  xhr.responseJSON.total["iTotBpjsTk"];
                     iTotBpjsJp.value =  xhr.responseJSON.total["iTotBpjsJp"];
-                    iTotSimpananKoperasi.value =  xhr.responseJSON.total["iTotSimpananKoperasi"];
-                    iTotHutangKaryawan.value =  xhr.responseJSON.total["iTotHutangKaryawan"];
+            
                 }
             },
             "columns": [
@@ -311,13 +306,7 @@
                     render: $.fn.dataTable.render.number( ',', '.', 2 )},
                     {data: 'bpjsJp',
                     className: "text-right" ,
-                    render: $.fn.dataTable.render.number( ',', '.', 2 )},
-                    {data: 'simpananKoperasi',
-                    className: "text-right" ,
-                    render: $.fn.dataTable.render.number( ',', '.', 2 )},
-                    {data: 'hutangKaryawan',
-                    className: "text-right" ,
-                    render: $.fn.dataTable.render.number( ',', '.', 2 )},
+                    render: $.fn.dataTable.render.number( ',', '.', 2 )}
                 
                 ],
             });
@@ -339,12 +328,7 @@
 
             });
 
-         
-            btnEdit.click(function (e) {
-                e.preventDefault();
-                //  let id = listTable.getSelectedData()[0].id;
-                // window.location = '{{ url('master-data-upah-karyawan-edit') }}-'+dataID;
-            });
+
 
             btnCekThp.click(function (e){
                 e.preventDefault();
