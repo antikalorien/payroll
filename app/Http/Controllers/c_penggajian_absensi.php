@@ -232,9 +232,9 @@ class c_penggajian_absensi extends Controller
                             // get rumus Harian =  (GAJI POKOK + TUNJ TETAP) / Skema hari kerja (21 atau 25)
                             $c_classPenggajian = new c_classPenggajian;
 
-                            $_upahHarian = $c_classPenggajian->hitungGajiHarianKaryawan($x->idKaryawan,$x->jmlHari);
+                            $_upahHarian = $c_classPenggajian->hitungGajiHarianKaryawan($x->idKaryawan,$x->jmlHari, $idPeriode);
                         
-                        
+
                             // get absensi
                             $_dtAbsensiHarian = DB::table('kehadiran_absensi')
                             ->select(
@@ -489,6 +489,4 @@ class c_penggajian_absensi extends Controller
                 return json_encode([$ex]);
             }
         }
-
-    
 }

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\karyawan_group;
 use App\karyawan_group_sub;
 use App\karyawan_group_sub_variable;
@@ -877,13 +876,13 @@ class c_classPenggajian extends Controller
     }
 
      // calculate Gaji Harian
-     public function hitungGajiHarianKaryawan($idKaryawan,$totHariKerja)
+     public function hitungGajiHarianKaryawan($idKaryawan,$totHariKerja,$idPeriode)
      {
          try
          {
             $result=0;
             $c_classRumus = new c_classRumus;
-            $_upahTetap = $c_classRumus->getRumus('GS-001',$idKaryawan);
+            $_upahTetap = $c_classRumus->getRumusPenggajianPeriode('GS-001',$idKaryawan,$idPeriode);
             $_totSkemaHari=$totHariKerja; 
             $result = $_upahTetap/$_totSkemaHari;
 
