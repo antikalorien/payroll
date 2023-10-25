@@ -317,6 +317,7 @@ class c_classKaryawan extends Controller
          {
              DB::beginTransaction();
                  // delete group_sub_variable
+             
                  DB::table('karyawan_group_sub_variable_bpjs')->where('id_karyawan','=',$_idKaryawan)->delete();
          
                  // get variable bpjs
@@ -328,12 +329,12 @@ class c_classKaryawan extends Controller
                  ->where('tipe_potongan','=',$_tipeBpjs)
                  ->where('isDell','=', '1')
                  ->get();
+             
                  
                  $_nominal=0;
                  // get rumus (UPAH TETAP) code GS-001
                  $c_classRumus = new c_classRumus;
                  $_nominal = $c_classRumus->getRumus('GS-001',$_idKaryawan); 
-         
          
                  foreach($varBpjs as $x)
                  {

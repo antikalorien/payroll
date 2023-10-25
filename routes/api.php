@@ -25,7 +25,6 @@ Route::post('GetAttendaceToDevice', 'C_SolutionAttendace@getAttendaceToDevice');
 // insert Periode Jadwal
 Route::post('PostPeriodeJadwal', 'sync_master@addPeriode');
 
-
 // service ---------------------------------------------------------
 Route::controller(service_penggajian::class)->group(function () {
     Route::get('gajiku', 'getPenggajian'); 

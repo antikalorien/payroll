@@ -28,7 +28,7 @@ class c_master_upahKaryawan extends Controller
         //   $_val = $c_classPenggajian->getPeriodeBerjalan(); 
         //   if( is_null($_val))
         //   {
-          // nothing
+        //   nothing
                return view('dashboard.master-data.upah-karyawan.baru');
         //   }
         //   else
@@ -156,7 +156,6 @@ class c_master_upahKaryawan extends Controller
     }
 
     public function submit(Request $request) {
-       
         $userLogin = request()->session()->get('username');
         $variabel = $request->variabel;
         $_idKaryawan = $request->idKaryawan;
@@ -215,6 +214,9 @@ class c_master_upahKaryawan extends Controller
                         $c_class = new c_classHistory;
                         $c_class = $c_class->insertHistory($_requestValue);   
                     }
+
+                    $c_karyawan = new c_classKaryawan;
+                    $_status = $c_karyawan->updateVariableBPJSKaryawan($_idKaryawan, $_tipeBpjs);
 
                 DB::commit();
                 $result = 'success';
