@@ -10,11 +10,14 @@
     <table style="width: 100%">
         <tr>
             <td rowspan="5" style="width: 20%">           
-                 <!-- <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('logoPIP.png'))) }}" class="logo" alt="Logo">  -->
+                 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('logoPIP.png'))) }}" class="logo" alt="Logo"> 
             </td>
           
             <td class="header-tj-slip" style="width: 60%">SLIP GAJI</td>
-            <td rowspan="5"></td>
+
+            <td rowspan="5" style="width: 20%">           
+                 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('logoSaloka.png'))) }}" class="logo" alt="Logo"> 
+            </td>
         </tr>
         <tr>
             <td class="text-bold">PT. PANORAMA INDAH PERMAI</td>
