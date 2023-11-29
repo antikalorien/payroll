@@ -9,19 +9,45 @@ use Illuminate\Support\Facades\Session;
 
 class service_penggajian extends Controller
 {
+    public function getPeriode() {
+        header('Access-Control-Allow-Origin: *');
+        header('Content-Type: application/json');
+        try {
+
+            $data = DB::table('gaji_periode')
+            ->select('id_periode as id_periode','periode as periode','keterangan as keterangan')
+            ->where('keterangan','<>','-')
+            ->orderBy('id_periode','desc')
+            ->limit(3)
+            ->get();
+
+            $result=response()->json([
+                'status' => 'success',
+                'message' => 'Get Data Periode Successfuly',
+                'periode' => $data
+            ]);
+
+            return $result;
+        } catch (\Exception $ex) {
+            return $ex;
+        }
+    }
+
     public function getPenggajian(Request $request) {
         header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
-
+       
         $username = $request->username;
         $password = $request->password;
         $idKaryawan = $request->id_karyawan;
         $idPeriode = $request->id_periode;
+   
         try {
              $dtUser = DB::table('users')
              ->where('id_absen','=',$username)
              ->where('username','=',$idKaryawan)
              ->orderBy('id','desc');
+           
                 if ($dtUser->exists()) {
                     $user = $dtUser->first();
                     if (Crypt::decryptString($user->password) == $password) {

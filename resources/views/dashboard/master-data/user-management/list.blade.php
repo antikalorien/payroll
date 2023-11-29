@@ -31,6 +31,10 @@
                                     <button type="button" id="iBtnExport" class="btn btn-danger ">
                                         <i class="fas fa-file-export mr-2"></i>EXPORT
                                     </button>
+                                    <button type="button" id="iResetPasswordAllUser" class="btn btn-warning ">
+                                        <i class="fas fa-file-export mr-2"></i>RESET PIN All User
+                                    </button>
+                                    
                             </div>
           
                         </div>
@@ -106,6 +110,8 @@
         const formFilter = $('#formFilter');
         const btnClearFilter = $('#btnClearFilter');
         const btnReset = $('#btnReset');
+        const iResetPasswordAllUser = $('#iResetPasswordAllUser');
+        
         let btnEdit = $('#btnEdit');
         const btnDisable = $('#btnDisable');
         const btnActivate = $('#btnActivate');
@@ -333,6 +339,53 @@
                 })
             });
 
+            iResetPasswordAllUser.click(function (e) {
+                e.preventDefault();
+                // let username = listTable.getSelectedData()[0].username;
+                Swal.fire({
+                    title: 'Reset PIN All User?',
+                    text: "Reset Semua PIN User",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Reset PIN'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: '{{ url('reset-password-allUser') }}',
+                            method: 'post',
+                            success: function (response) {
+                                if (response === 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: 'Password berhasil direset',
+                                        onClose(modalElement) {
+                                            window.location.reload();
+                                        }
+                                    });
+                                } else {
+                                    console.log(response);
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Gagal',
+                                        text: 'Gagal reset Password, silahkan coba lagi.',
+                                    });
+                                }
+                            },
+                            error: function (response) {
+                                console.log(response);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'System Error',
+                                    text: 'Silahkan hubungi Developerf',
+                                });
+                            }
+                        });
+                    }
+                })
+            });
 
 
             btnActivate.click(function (e) {

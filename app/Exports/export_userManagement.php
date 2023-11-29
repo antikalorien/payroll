@@ -6,7 +6,7 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-
+use Illuminate\Support\Facades\Crypt;
 use App\User;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -21,7 +21,6 @@ class export_userManagement implements FromView, WithColumnFormatting,WithColumn
     public function view(): View
     {
         try {
-      
             $trn['karyawan']= DB::table('users')
             ->select('users.id as id',
             'users.status as status',
@@ -46,40 +45,27 @@ class export_userManagement implements FromView, WithColumnFormatting,WithColumn
             ->join('departemen_sub','departemen_sub.id_subDepartemen','users.id_departemen_sub')
             ->join('departemen','departemen.id_Dept','users.id_departemen')
             ->join('skema_hari_kerja','skema_hari_kerja.id_skema','users.id_skema_hari_kerja')
+            ->where('status','1')
             ->orderBy('users.username','asc')
             ->get();
+
+            $dataUserLogin= DB::table('users')
+            ->select('users.password')
+            ->where('status','1')
+            ->orderBy('users.username','asc')
+            ->get();
+
+            foreach($dataUserLogin as $v)
+            {
+                $lst[] = DB::raw(Crypt::decryptString($v->password));
+            }
+            $trn['userLogin'] = $lst;
          
             return view('dashboard.master-data.user-management.export_userManagement', $trn);
         } catch (\Exception $ex) {
             dd ($ex);
             return response()->json($ex);
         }
-    }
-
-    public function headings(): array{
-        return [
-            [
-                'ID',
-                'STATUS',
-                'ID DEPARTEMEN',
-                'DEPARTEMEN',
-                'ID DEPARTEMEN SUB',
-                'DEPARTEMEN SUB',
-                'POS',
-                'GRADE',
-                'ID_ABSEN',
-                'USERNAME',
-                'NAMA',
-                'EMAIL',
-                'ID SKEMA HARI KERJA',
-                'SKEMA HARI KERJA',
-                'NO HP',
-                'TANGGAL BERGABUNG',
-                'MASA KERJA',
-                'TANGGAL LAHIR',
-                'TANGGAL LAHIR',
-            ],
-        ];
     }
 
     public function columnFormats(): array

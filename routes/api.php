@@ -27,6 +27,10 @@ Route::post('PostPeriodeJadwal', 'sync_master@addPeriode');
 
 // service ---------------------------------------------------------
 Route::controller(service_penggajian::class)->group(function () {
-    Route::get('gajiku', 'getPenggajian'); 
+    Route::get('get_periode', 'getPeriode'); 
+    Route::post('gajiku', 'getPenggajian'); 
 });
 
+Route::controller(service_login::class)->group(function () {
+    Route::post('edit_password', 'editPassword'); 
+});

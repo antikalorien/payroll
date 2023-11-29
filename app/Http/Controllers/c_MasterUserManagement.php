@@ -241,10 +241,43 @@ class c_MasterUserManagement extends Controller
         $username = $request->username;
         try {
             DB::beginTransaction();
+            $randomNumber = random_int(100000, 999999);
             DB::table('users')->where('username','=',$username)
                 ->update([
-                    'password' => Crypt::encryptString($username)
+                    'password' => Crypt::encryptString($randomNumber)
                 ]);
+            DB::commit();
+            return 'success';
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return json_encode([$ex]);
+        }
+    }
+
+    public function resetPasswordAllUser(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            $listUser = DB::table('users')
+            ->select('username','password')
+            ->where('status','1')
+            ->get();
+
+            foreach($listUser as $v)
+            {
+           
+                $randomNumber = random_int(100000, 999999);
+          
+                // cek jika password belum di ganti
+                // if($v->username ==Crypt::decryptString($v->password))
+                // {
+                    DB::table('users')->where('username','=',$v->username)
+                    ->update([
+                        'password' => Crypt::encryptString($randomNumber)
+                    ]);
+                // }
+            }
+    
             DB::commit();
             return 'success';
         } catch (\Exception $ex) {

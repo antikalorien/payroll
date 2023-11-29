@@ -20,12 +20,13 @@
                 <th >MASA KERJA (bulan)</th>
                 <th >TANGGAL LAHIR</th>
                 <th >USIA</th>
+                <th >PIN ACCOUNT</th>
             </tr>
         </thead>
       
         <tbody>
 
-        @php($i=1)
+        @php($i=0)
         @php($ii=1)
         @foreach($karyawan as $d)
             <tr>
@@ -52,11 +53,9 @@
                 <td>{{ $d->masaKerja }}</td>
                 <td>{{ $d->dob }}</td>
                 <td>{{ $d->usia }}</td>
+                <td>{{ $userLogin[$i] }}</td>
             </tr>
-     
         @php($i++) 
-             
         @endforeach
-
     </tbody>       
 </table>

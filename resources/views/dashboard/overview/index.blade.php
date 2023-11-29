@@ -176,16 +176,32 @@
                                  <table id="tableIndex" class="table table-striped table-bordered display nowrap" style="width: 100%">
                                     <thead clas="bg-dark">
                                     <tr>
+                                    <th>Payslip</th>
                                     <th>Periode</th>
                                     <th>Total Karyawan</th>
                                     <th>Total Thp</th>             
                                     </tr>
                                     </thead>
-                                </table>              
+                                </table>   
+                                <div class="card-footer bg-whitesmoke">
+                        <div class="row justify-content-end">
+                        <div class="col-sm-12 col-lg-3 mt-2 mt-lg-0">
+                                <div class="btn-group btn-block mb-3" role="group" aria-label="Basic example">
+                                    <button type="button" id="btnDisable" class="btn btn-danger" disabled>
+                                        <i class="fas fa-times mr-2"></i>Disable
+                                    </button>
+                                    <button type="button" id="btnActivate" class="btn btn-success" disabled>
+                                        <i class="fas fa-check mr-2"></i>Activate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>           
                 </div>
                 </div>
               </div>
             </div>
+            
             @if( $dataBpjs !='')
             <!-- history acktifitas -->
             <div class="col-lg-4 col-md-12 col-12 col-sm-12">
@@ -271,7 +287,8 @@
 
 @section('script')
     <script type="text/javascript">  
-
+      const btnDisable = $('#btnDisable');
+      const btnActivate = $('#btnActivate');
 
         $(document).ready(function () {  
           getDataTable();
@@ -298,6 +315,7 @@
                 }
             },
             "columns": [
+                {data: 'keterangan'},
                 {data: 'periode'},
                 {data: 'totalKaryawan'},
                 {data: 'thp',
@@ -309,91 +327,105 @@
         });
         $('#tableIndex tbody').on( 'click', 'tr', function () {
             let _data = tableIndex.row( this ).data();
-         
-            // iNip.val(data.nip);
-            // iNip.attr('disabled','true');
             if ( $(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
-                iExportSelect.attr('disabled','true');
+                btnDisable.attr('disabled','true');
+                btnActivate.attr('disabled','true');
 
             } else {
                 tableIndex.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
-                iExportSelect.removeAttr('disabled');
+                btnDisable.removeAttr('disabled');
+                btnActivate.removeAttr('disabled');
 
                 let _data = tableIndex.row('.selected').data();
-                selectID = _data.id;
+                selectID = _data.id_periode;
             }
         });  
-
-        //     let tableIndexBpjs = $('#tableIndexBpjs').DataTable({
-       
-        //     "bDestroy": true,
-        //     "scrollY": 400,
-        //     "scrollX": true,
-        //     "ajax": {
-        //         "method": "get",
-        //         "url": "{{ url('dashboard/data-bpjs') }}",
-        //         "header": {
-        //             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content'),
-        //         },
-        //         "complete": function (xhr,responseText) {
-        //             if (responseText === 'error') {
-        //                 console.log(xhr);
-        //                 console.log(responseText);
-        //             }
-                 
-        //         }
-        //     },
-        //     "columns": [
-        //             {data: 'periode'},
-        //             {data: 'totalKaryawan'},
-
-        //             {data: 'bpjsKesKaryawan',
-        //             className: "text-right" ,
-        //             render: $.fn.dataTable.render.number( ',', '.', 2 )},
-        //             {data: 'bpjsKesPerusahaan',
-        //             className: "text-right" ,
-        //             render: $.fn.dataTable.render.number( ',', '.', 2 )},
-
-        //             {data: 'bpjsJpKaryawan',
-        //             className: "text-right" ,
-        //             render: $.fn.dataTable.render.number( ',', '.', 2 )},
-        //             {data: 'bpjsJpPerusahaan',
-        //             className: "text-right" ,
-        //             render: $.fn.dataTable.render.number( ',', '.', 2 )},
-
-        //             {data: 'bpjsTkKaryawan',
-        //             className: "text-right" ,
-        //             render: $.fn.dataTable.render.number( ',', '.', 2 )},
-        //             {data: 'bpjsTkPerusahaan',
-        //             className: "text-right" ,
-        //             render: $.fn.dataTable.render.number( ',', '.', 2 )},
-          
-          
-        //     ],
-        // });
-        // $('#tableIndexBpjs tbody').on( 'click', 'tr', function () {
-        //     let _data = tableIndexBpjs.row( this ).data();
-         
-        //     // iNip.val(data.nip);
-        //     // iNip.attr('disabled','true');
-        //     if ( $(this).hasClass('selected') ) {
-        //         $(this).removeClass('selected');
-        //         iExportSelect.attr('disabled','true');
-
-        //     } else {
-        //       tableIndexBpjs.$('tr.selected').removeClass('selected');
-        //         $(this).addClass('selected');
-        //         iExportSelect.removeAttr('disabled');
-
-        //         let _data = tableIndexBpjs.row('.selected').data();
-        //         selectID = _data.id;
-        //     }
-        // });  
-
-
       }
+
+      btnActivate.click(function (e) {
+                e.preventDefault();
+                let tables = $('#listTable').DataTable();
+                    // Handle form submission event
+                    var form = this;
+                    Swal.fire({
+                    title: "Apakah ingin Aktifkan data ini",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Active'
+                    }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: '{{ url('dashboard/payslip') }}',
+                            method: 'post',
+                            data: {id: selectID,tipe:1},
+                            success: function (response) {
+                                console.log(response);
+                                if (response === 'success') {
+                                    Swal.fire({
+                                        title: 'Data tersimpan!',
+                                        type: 'success',
+                                        onClose: function () {
+                                              window.location.reload();
+                                        }
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        title: 'Gagal',
+                                        text: 'Silahkan coba lagi',
+                                        type: 'error',
+                                    })
+                                }
+                            }
+                        });
+                    }
+                    });
+            });
+
+
+            btnDisable.click(function (e) {
+                e.preventDefault();
+                let tables = $('#listTable').DataTable();
+                    // Handle form submission event
+                    var form = this;
+                    Swal.fire({
+                    title: "Apakah ingin Disable data ini",
+                    type: 'danger',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Disable'
+                    }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: '{{ url('dashboard/payslip') }}',
+                            method: 'post',
+                            data: {id: selectID,tipe:0},
+                            success: function (response) {
+                                console.log(response);
+                                if (response === 'success') {
+                                    Swal.fire({
+                                        title: 'Data tersimpan!',
+                                        type: 'success',
+                                        onClose: function () {
+                                              window.location.reload();
+                                        }
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        title: 'Gagal',
+                                        text: 'Silahkan coba lagi',
+                                        type: 'error',
+                                    })
+                                }
+                            }
+                        });
+                    }
+                    });
+            });
         
     </script>
   

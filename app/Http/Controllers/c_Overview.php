@@ -153,13 +153,42 @@ class c_Overview extends Controller
     public function listData() {
         $data['data'] = DB::table('gaji_karyawan')
         ->select(
+            'gaji_karyawan.id_periode as id_periode',
+            'gaji_periode.keterangan as keterangan',
             'gaji_periode.periode as periode',
             'gaji_periode.total_karyawan as totalKaryawan',
             DB::raw('sum(gaji_karyawan.thp) as thp'))
         ->join('gaji_periode','gaji_periode.id_periode','gaji_karyawan.id_periode')
         ->groupBy('gaji_karyawan.id_periode')
+        ->orderBy('gaji_periode.created_at','desc')
         ->get();    
         return json_encode($data);        
+    }
+
+    public function updateStatusPayslip(Request $request)
+    {
+        $idPeriode = $request->id;
+        $tipe = $request->tipe;
+        
+        try {
+            $keterangan = '';
+            if($tipe=='1')
+            {
+                $keterangan = 'Active Payslip';
+            }
+            elseif($tipe=='0')
+            {
+                $keterangan = '-';
+            }
+            DB::table('gaji_periode')->where('id_periode','=',$idPeriode)
+                ->update([
+                    'keterangan' => $keterangan
+                ]);
+             
+            return 'success';
+        } catch (\Exception $ex) {
+            return $ex;
+        }
     }
 
     public function listDataBpjs($idPeriode) {

@@ -33,6 +33,9 @@ foreach ($routes as $route) {
 Route::post('login/submit', 'c_Login@submit');
 Route::post('logout', 'c_Login@logout');
 Route::get('reset-password', 'c_Login@resetPassword');
+
+Route::post('reset-password-allUser', 'c_MasterUserManagement@resetPasswordAllUser');
+
 Route::post('reset-password/submit', 'c_Login@resetPasswordSubmit');
 
 // addtitional
@@ -52,6 +55,8 @@ Route::middleware(['check.login'])->group(function () {
     // Dashboard
     Route::get('dashboard', 'c_Overview@index');
     Route::get('dashboard/data', 'c_Overview@listData');
+    Route::post('dashboard/payslip', 'c_Overview@updateStatusPayslip');
+    
     Route::get('dashboard/data-bpjs', 'c_Overview@listDataBpjs');
 
     // informasi karyawan
