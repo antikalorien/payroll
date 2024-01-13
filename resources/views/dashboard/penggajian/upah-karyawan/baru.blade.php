@@ -250,7 +250,7 @@
                         return '<span style="color:' + color + '">' + status + '</span>';
                     }
                     },
-                    {data: 'statusSkemaGaji',
+                    {data: 'skemaGaji',
                         render: function(data, type) {
                             let color;
                         if (data == '1') {
@@ -261,6 +261,10 @@
                         else if (data == '2') {
                             status = 'Harian';
                             color = 'orange';
+                        }
+                        else if (data == '3') {
+                            status = '50 %';
+                            color = 'blue';
                         }
                         else
                         {

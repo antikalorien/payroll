@@ -341,7 +341,7 @@ class c_classPenggajian extends Controller
         } catch (\Exception $ex) {
             DB::rollBack();
                 // insert history
-                $_keterangan = 'Error--updateBpjsKaryawanPeriode--'.$ex;
+                $_keterangan = 'Error--updateUpahkaryawanMasterPeriode--'.$ex;
                 $_requestValue['tipe'] = 0;
                 $_requestValue['menu'] ='Penggajian';
                 $_requestValue['module'] = 'Class Penggajian';

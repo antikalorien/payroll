@@ -64,7 +64,6 @@ class karyawan_updateMasaKerja extends Command
                 ]);
             }
 
-            
                 // add to table log activity
                 $activity = new sysActivityHistory();
                 $activity->tipe = '1';

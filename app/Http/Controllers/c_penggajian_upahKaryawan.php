@@ -75,7 +75,8 @@ class c_penggajian_upahKaryawan extends Controller
            ->join('grade','grade.id_grade','users.grade')
            ->where('gaji_karyawan.id_periode',$idPeriode)
            ->get();
-  
+          
+            
            $data['total'] = DB::table('gaji_karyawan_sub_variable')
            ->select(
               'gaji_karyawan_sub_variable.id_karyawan as idKaryawan',

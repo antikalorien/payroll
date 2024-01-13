@@ -181,8 +181,7 @@ class c_classKaryawan extends Controller
 
     public function insertKaryawanGroupSubVariable($idKaryawan,$nominal)
     {
-        $userLogin = request()->session()->get('username');
-
+        $userLogin = 'system';
         $_idKaryawan = $idKaryawan;
         $_nominal =$nominal;
 
@@ -192,7 +191,7 @@ class c_classKaryawan extends Controller
               ->select('group_sub_variable.id as id','group_sub_variable.id_variable as idVariable','group_sub_variable.variable as variable')
               ->where('group_sub_variable.isDell','1')
               ->get();
-
+             
               foreach($groupSubVariable as $x)
               {
                 // cek double data
@@ -254,7 +253,7 @@ class c_classKaryawan extends Controller
                  $_requestValue['menu'] ='Karyawan';
                  $_requestValue['module'] = 'Class Karyawan';
                  $_requestValue['keterangan'] = $_keterangan;
-                 $_requestValue['pic'] = $userLogin;
+                 $_requestValue['pic'] = 'system';
 
                  $c_class = new c_classHistory;
                  $c_class = $c_class->insertHistory($_requestValue);  

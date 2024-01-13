@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\karyawan_updateUsers::class,
         Commands\karyawan_updateUsia::class,
         Commands\karyawan_updateTransport::class,
         Commands\karyawan_updateMasaKerja::class,
@@ -26,23 +27,23 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('karyawan:updateUsers')
+        ->dailyAt('00:01');
+
         $schedule->command('karyawan:usia')
-        // ->daily();
-        ->hourly();
-        // ->dailyAt('16:07');
+        ->dailyAt('00:03');
 
         $schedule->command('karyawan:masaKerja')
-        // ->daily();
-        ->hourly();
-        // ->dailyAt('16:07');
+        ->dailyAt('00:06');
         
         $schedule->command('karyawan:transport')
-        // ->daily();
-        ->hourly();
-        // ->dailyAt('16:07');
+        ->dailyAt('00:09');
 
+        $schedule->command('update:departemen')
+        ->dailyAt('00:01');
+
+        $schedule->command('update:subDepartemen')
+        ->dailyAt('00:03');
     }
 
     /**
