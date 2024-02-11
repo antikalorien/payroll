@@ -127,7 +127,8 @@ class c_MasterUserManagement extends Controller
             $_users['username'] = $_username;
             $_users['name'] = $_name; 
             $_users['email'] = $_email;
-            $_users['password'] =$_username; 
+            $randomNumber = random_int(100000, 999999);
+            $_users['password'] =$randomNumber; 
             $_users['no_hp'] = $_noHp;
             $_users['id_skema_hari_kerja'] = $_idSkemaHariKerja;
             $_users['doj'] = $_tanggalBergabung;

@@ -25,6 +25,7 @@
                             </button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" id="iTambahLembur">Add Lembur</a>
+                                <a class="dropdown-item" id="iGetFromLokaryawan">Get From Lokaryawan</a>
                                 <a class="dropdown-item" id="iImportExcel">Import Excel</a>
                                 <hr>
                                 <a class="dropdown-item" id="iRemoveSelectedCheckbox">Remove Selected Checkbox</a>
@@ -128,6 +129,7 @@
         let iPic = $('#iPic');
 
         const iTambahLembur = $('#iTambahLembur');
+        const iGetFromLokaryawan = $('#iGetFromLokaryawan');
         const iImportExcel = $('#iImportExcel');
         const iRemoveSelectedCheckbox = $('#iRemoveSelectedCheckbox');
         const iExportAll = $('#iExportAll');
@@ -208,8 +210,7 @@
                     let data = listTable.row('.selected').data();
                     dataID = data.username;
                 }
-            });
-
+                });
             });
 
             btnSubmit.click(function (e) {
@@ -281,6 +282,53 @@
                 window.location = '{{ url('penggajian/data-lembur-add') }}';
             });
 
+            iGetFromLokaryawan.click(function (e) {
+                e.preventDefault();
+                let tables = $('#listTable').DataTable();
+                Swal.fire({
+                    title: 'Syncronise',
+                    text: "Get Data From Lokaryawan",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Syncronise'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: '{{ url('dashboard/penggajian/data-lembur/data') }}',
+                            method: 'get',
+                            success: function (response) {
+                                if (response === 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: 'Data Berhasil ditambahkan',
+                                        onClose(modalElement) {
+                                            window.location.reload();
+                                        }
+                                    });
+                                } else {
+                                    console.log(response);
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Gagal',
+                                        text: 'Gagal syncronise Data, silahkan coba lagi.',
+                                    });
+                                }
+                            },
+                            error: function (response) {
+                                console.log(response);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'System Error',
+                                    text: 'Silahkan hubungi Developer',
+                                });
+                            }
+                        });
+                    }
+                })
+            });
             
             iImportExcel.click(function (e) {
                 e.preventDefault();

@@ -34,7 +34,8 @@ class service_karyawan extends Controller
                     $_users['username'] = $x->username;
                     $_users['name'] = $x->name; 
                     $_users['email'] = $x->email;
-                    $_users['password'] =$x->id_absen; 
+                    $randomNumber = random_int(100000, 999999);
+                    $_users['password'] =$randomNumber; 
                     $_users['no_hp'] = $x->no_hp;
                     $_users['id_skema_hari_kerja'] = $x->id_skema_hari_kerja;
                     $_users['doj'] = $x->doj;
@@ -57,7 +58,8 @@ class service_karyawan extends Controller
                         $_users['username'] = $x->username;
                         $_users['name'] = $x->name; 
                         $_users['email'] = $x->email;
-                        $_users['password'] =$x->id_absen; 
+                        $randomNumber = random_int(100000, 999999);
+                        $_users['password'] =$randomNumber; 
                         $_users['no_hp'] = $x->no_hp;
                         $_users['id_skema_hari_kerja'] = $x->id_skema_hari_kerja;
                         $_users['doj'] = $x->doj;
