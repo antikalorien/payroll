@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\c_classRumu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Session;
 // use PDF;
 use Maatwebsite\Excel\Facades\Excel;
@@ -93,7 +94,7 @@ class c_penggajian_dataLembur extends Controller
            'departemen.departemen as id_departemen',
            'departemen_sub.sub_departemen as subDepartemen',
            'users.pos as pos',
-           'users.grade as grade',
+           'grade.level as grade',
            'gaji_lembur.id_karyawan as id_absen',
            'users.username as username',
            'users.name as name',
@@ -109,6 +110,7 @@ class c_penggajian_dataLembur extends Controller
             ->join('users','users.id_absen','=','gaji_lembur.id_karyawan')
             ->join('departemen','departemen.id_dept','=','gaji_lembur.id_dept')
             ->join('departemen_sub','departemen_sub.id_subDepartemen','=','gaji_lembur.id_sub_dept')
+            ->join('grade','grade.id_grade','users.grade')
             ->where('gaji_lembur.id_periode',$idPeriode)
             ->orderBy('gaji_lembur.tgl','asc')
             ->get();
@@ -282,7 +284,6 @@ class c_penggajian_dataLembur extends Controller
                                 $c_classPenggajian = $c_classPenggajian->deleteLembur($dataKaryawan->id_periode,$dataKaryawan->id_karyawan,$v);
                         
                                 $_kar = 'ID Karyawan : '. $dataKaryawan->id_karyawan.' Tanggal : '. $dataKaryawan->tgl.' Jam Lembur : '.$dataKaryawan->jam_lembur.'-'. $_kar;
-                                
                             }
                             
                             $_keterangan = 'Action-Remove CheckBox Data Lembur | Data : '.$_kar;
@@ -300,6 +301,90 @@ class c_penggajian_dataLembur extends Controller
                         DB::commit();
         
                 return 'success';
+            } catch (\Exception $ex) {
+                return response()->json($ex);
+            }
+        }
+
+        public function actionSyncronise()
+        {
+            try
+            {
+                DB::beginTransaction();
+
+                // get ID Periode
+                $c_classPenggajian = new c_classPenggajian;
+                $_val = $c_classPenggajian->getPeriodeBerjalan(); 
+                if( is_null($_val))
+                {
+                    // nothing
+
+                }
+                else
+                {
+                    // get Data Periode
+                    $periode = $_val;
+                    $idPeriode = $periode->idPeriode;
+                  
+                    // $tglAwal = $periode->tgl_awal;
+                    $tglAkhir = $periode->tgl_akhir;
+                    $tglAwal = '2024-02-01';
+                    $tglAkhir = '2024-02-28';
+                  
+                    // $c_calass = new c_classApi;
+                    // $_val = $c_calass->getUrlApi(); 
+                    // $_url= $_val.'get_request_overtime_karyawan?tanggal_awal='.$tglAwal.'&tanggal_akhir='.$tglAkhir;
+                    $_url= 'http://192.168.0.75:8091/api/get_request_overtime_karyawan?tanggal_awal='.$tglAwal.'&tanggal_akhir='.$tglAkhir;
+                    $response = Http::get($_url);
+                    $jsonData = $response->json();
+                
+                    $totalKaryawan=0;
+                    foreach($jsonData['data'] as $x => $node)
+                    {
+                  
+                        // "id_overtime" => "OT-9525-000000"
+                        // "departemen" => "Finance & Accounting"
+                        // "sub_departemen" => "Finance"
+                        // "grade" => "Officer"
+                        // "name" => "Sri Wahyuningsih"
+                        // "nik" => "02-0121-006"
+                        // "no_telephone" => "6285740112428"
+                        // "id_karyawan" => "9525"
+                        // "nip" => "-"
+                        // "tgl_pengajuan" => "2024-02-05 12:50:24"
+                        // "tgl_lembur" => "2024-02-05"
+                        // "jam_lembur" => "1.00"
+                        // "total_jam" => "0.00"
+                        // "status" => "1"
+                        // "keterangan" => "-"
+                        $jamLembur=0;
+                        $idOvertime = $node['id_overtime'];
+                        $nik = $node['nik'];
+                        $idKaryawan = $node['id_karyawan'];
+                        $tglLembur = $node['tgl_lembur'];
+                        $jamLembur = $node['jam_lembur'];
+                        $keterangan = $node['keterangan'];
+   
+                        // Hitung Lembur Karyawan
+                        $c_classPenggajian = new c_classPenggajian;
+                        $_val = $c_classPenggajian->tambahLembur($idPeriode,$idKaryawan,$tglLembur,$jamLembur, $keterangan);
+                    }
+
+                     // insert history
+                     $_keterangan = 'Tambah Lembur-Syncrinse From LOKARYAWAN ID Periode : ' . $idPeriode .' Periode : '. $periode->periode.' Tanggal Awal : '. $tglAwal. ' Tanggal Akhir : '. $tglAkhir;
+            
+                     $_requestValue['tipe'] = 0;
+                     $_requestValue['menu'] ='Penggajian';
+                     $_requestValue['module'] = 'Data Lembur';
+                     $_requestValue['keterangan'] = $_keterangan;
+                     $_requestValue['pic'] = 'system';
+                    
+                     $c_class = new c_classHistory;
+                     $c_class = $c_class->insertHistory($_requestValue);
+                    
+                     DB::commit();
+                    return 'success';
+                }   
             } catch (\Exception $ex) {
                 return response()->json($ex);
             }

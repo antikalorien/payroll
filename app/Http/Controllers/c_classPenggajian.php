@@ -543,7 +543,11 @@ class c_classPenggajian extends Controller
         try
         {
             $dtPeriode = DB::table('gaji_periode')
-            ->select('gaji_periode.id_periode as idPeriode','gaji_periode.periode as periode','gaji_periode.total_karyawan as totalKaryawan')
+            ->select('gaji_periode.id_periode as idPeriode',
+            'gaji_periode.periode as periode',
+            'gaji_periode.tgl_awal',
+            'gaji_periode.tgl_akhir',
+            'gaji_periode.total_karyawan as totalKaryawan')
             ->where('gaji_periode.pic','-')
             ->first();
            

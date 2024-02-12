@@ -296,7 +296,7 @@
                 }).then((result) => {
                     if (result.value) {
                         $.ajax({
-                            url: '{{ url('dashboard/penggajian/data-lembur/data') }}',
+                            url: '{{ url('penggajian/data-lembur-syncronise') }}',
                             method: 'get',
                             success: function (response) {
                                 if (response === 'success') {

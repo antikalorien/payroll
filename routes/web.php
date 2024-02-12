@@ -251,6 +251,7 @@ Route::middleware(['check.login'])->group(function () {
         Route::get('dashboard/penggajian/data-lembur', 'c_penggajian_dataLembur@index');
             // Action Data
             Route::get('penggajian/data-lembur-add', 'c_penggajian_dataLembur@addLembur');
+            Route::get('penggajian/data-lembur-syncronise', 'c_penggajian_dataLembur@actionSyncronise');
             Route::get('penggajian/data-lembur-importExcel', 'c_penggajian_dataLembur@importLembur');
             Route::post('penggajian/data-lembur/action', 'c_penggajian_dataLembur@actionData');
             // Action Export
