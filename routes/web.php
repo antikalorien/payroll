@@ -289,6 +289,17 @@ Route::middleware(['check.login'])->group(function () {
         Route::get('dashboard/penggajian/paycheck/cekThp', 'c_penggajian_paycheck@hitungThp');
         Route::post('penggajian/paycheck/submitModule', 'c_penggajian_paycheck@submitModule');
         
+    // THR
+        Route::get('dashboard/thr/input-thr', 'c_penggajian_thr@index');
+        Route::get('dashboard/thr/data-thr/data', 'c_penggajian_thr@data');
+        
+        // Action Data
+        Route::get('dashboard/thr/input-thr-add', 'c_penggajian_thr@addLembur');
+        Route::get('dashboard/thr/input-thr-importExcel', 'c_penggajian_thr@importLembur');
+        Route::post('dashboard/penggajian/data-thr/import-thr', 'c_penggajian_thr@imporDataThr');
+        Route::post('thr/input-thr/action', 'c_penggajian_thr@actionData');
+        // Action Export
+        Route::get('dashboard/thr/input-thr/actionExport/{id}/{idData}', 'c_penggajian_thr@actionExport');
         
     // Laporan 
         // Analisa-pph21

@@ -25,6 +25,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::controller(service_penggajian::class)->group(function () {
     Route::get('get_periode', 'getPeriode'); 
     Route::post('gajiku', 'getPenggajian'); 
+
+    
+    Route::get('get_periode_thr', 'getPeriodeThr'); 
+    Route::post('thrku', 'getThr'); 
 });
 
 Route::controller(service_login::class)->group(function () {

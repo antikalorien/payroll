@@ -19,7 +19,7 @@ class service_karyawan extends Controller
             $request = $client->get($_url);
             $response = $request->getBody();
             $jsonDecode = json_decode($response);
-   
+          
             if($jsonDecode->status=='success')
             {
                 // karyawan Acvie
@@ -48,7 +48,8 @@ class service_karyawan extends Controller
                 // karyawan NonActive
                 $listKaryawanNonActive = $jsonDecode->karyawanNonActive;
                 {
-                    foreach($lstKaryawanActive as $x)
+                    
+                    foreach($listKaryawanNonActive as $x)
                     {
                         $_users['id_departemen'] =  $x->id_departemen;
                         $_users['id_departemen_sub'] =  $x->id_departemen_sub;
@@ -65,7 +66,7 @@ class service_karyawan extends Controller
                         $_users['doj'] = $x->doj;
                         $_users['dob'] = $x->dob;
                         $_users['system'] = 1;
-                        $_users['status'] = $x->status; 
+                        $_users['status'] = 2; // status non active payroll user =2; 1=active
                         $this->insertKarywan($_users);
                     }
                 }
@@ -80,7 +81,7 @@ class service_karyawan extends Controller
     {
         try
         {
-
+            
             return 'success';
         } catch (\Exception $ex) {
             return $ex;

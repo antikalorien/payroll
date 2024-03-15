@@ -2,176 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\c_classRumus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Session;
 // use PDF;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\penggajian_dataLembur_lemburKaryawan;
+use App\Imports\penggajian_thr;
 use App\Exports\export_penggajianLembur;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
-class c_penggajian_dataLembur extends Controller
+class c_penggajian_thr extends Controller
 {
     public function index() {
-        return view('dashboard.penggajian.data-lembur.baru');
+        return view('dashboard.thr.input-thr.baru');
     }
 
     public function addLembur() {
-        return view('dashboard.penggajian.data-lembur.baru_add');
+        return view('dashboard.thr.input-thr.baru_add');
     }
 
     public function importLembur() {
-        return view('dashboard.penggajian.data-lembur.baru_importExcel');
+        return view('dashboard.thr.input-thr.baru_importExcel');
     }
 
     public function list() {
-        return view('dashboard.penggajian.data-lembur.list');
-    }
-
-    public function getKaryawanGajiPeriode(Request $request)
-    {
-       // get ID Periode
-       $c_classPenggajian = new c_classPenggajian;
-       $_val = $c_classPenggajian->getPeriodeBerjalan(); 
-       if( is_null($_val))
-       {
-       // nothing
-       }
-       else
-       {
-           // get Data Periode
-           $periode = $_val;
-           $idPeriode=$periode->idPeriode;
-
-           $data = [];
-           if (isset($_GET['search'])) {
-               $data['results'] = DB::table('gaji_karyawan')
-               ->select('gaji_karyawan.id_karyawan as id',DB::raw('concat(users.username," | ",users.name, " --> Dept.",departemen.departemen," | Sub Dept.",departemen_sub.sub_departemen) as text'))
-               ->join('users','users.id_absen','gaji_karyawan.id_karyawan')
-               ->join('departemen','departemen.id_dept','=','gaji_karyawan.id_departemen')
-               ->join('departemen_sub','departemen_sub.id_subDepartemen','=','gaji_karyawan.id_departemen_sub')
-                   ->where('gaji_karyawan.id_karyawan', 'like', '%' . $_GET['search'] . '%')
-                   ->orWhere('users.name', 'like', '%' . $_GET['search'] . '%')
-                   ->where('gaji_karyawan.id_periode',$idPeriode)
-                   ->orderBy('users.name','asc')
-                   ->get();
-           } else {
-               $data['results'] = DB::table('gaji_karyawan')
-               ->select('gaji_karyawan.id_karyawan as id',DB::raw('concat(users.username," | ",users.name, " --> Dept.",departemen.departemen," | Sub Dept.",departemen_sub.sub_departemen) as text'))
-               ->join('users','users.id_absen','gaji_karyawan.id_karyawan')
-               ->join('departemen','departemen.id_dept','=','gaji_karyawan.id_departemen')
-               ->join('departemen_sub','departemen_sub.id_subDepartemen','=','gaji_karyawan.id_departemen_sub')
-               ->where('gaji_karyawan.id_periode',$idPeriode)
-               ->orderBy('users.name','asc')
-               ->get();
-           }
-       }
-        return $data;
+        return view('dashboard.thr.input-thr.list');
     }
 
     public function data() {
-    // get ID Periode
-       $c_classPenggajian = new c_classPenggajian;
-       $_val = $c_classPenggajian->getPeriodeBerjalan(); 
-       if( is_null($_val))
-       {
-       // nothing
-       }
-       else
-       {
-           // get Data Periode
-           $periode = $_val;
-           $idPeriode=$periode->idPeriode;
-
-           $data['data'] =  DB::table('gaji_lembur')
+        // get ID Periode
+        $yearsNow = Carbon::now()->format('Y');
+        
+        $data['data'] =  DB::table('gaji_thr')
            ->select(
-           'gaji_lembur.id as id',
-           'gaji_lembur.id_periode as idPeriode',
-           'departemen.departemen as id_departemen',
-           'departemen_sub.sub_departemen as subDepartemen',
+           'gaji_thr.id as id',
+           'gaji_thr.id_periode as id_periode',
+           'departemen.departemen as departemen',
+           'departemen_sub.sub_departemen as sub_departemen',
            'users.pos as pos',
            'grade.level as grade',
-           'gaji_lembur.id_karyawan as id_absen',
-           'users.username as username',
+           'users.id_absen as id_absen',
+           'users.username as nik',
            'users.name as name',
-           'users.tipe_kontrak as tieKontrak',
-           'gaji_lembur.updated_at as updatedAt',
-           'gaji_lembur.tgl as tanggal',
-           'gaji_lembur.jam_lembur as jamLembur',
-            DB::raw('(FORMAT((gaji_lembur.total_upah),2)) as totalUpah'),
-            'gaji_lembur.total_jam as totalJam',
-            DB::raw('(FORMAT((gaji_lembur.nominal),2)) as nominal'),
-            'gaji_lembur.keterangan as keterangan',
-            'gaji_lembur.pic as pic')
-            ->join('users','users.id_absen','=','gaji_lembur.id_karyawan')
-            ->join('departemen','departemen.id_dept','=','gaji_lembur.id_dept')
-            ->join('departemen_sub','departemen_sub.id_subDepartemen','=','gaji_lembur.id_sub_dept')
+           'users.masa_kerja as masa_kerja',
+           'users.no_rekening',
+           'gaji_thr.tipe_thr',
+           DB::raw('(FORMAT((gaji_thr.thr),2)) as thr'),
+           'gaji_thr.reff',
+           'gaji_thr.updated_at as updatedAt')
+            ->join('users','users.id_absen','gaji_thr.id_karyawan')
+            ->join('departemen','departemen.id_dept','users.id_departemen')
+            ->join('departemen_sub','departemen_sub.id_subDepartemen','users.id_departemen_sub')
             ->join('grade','grade.id_grade','users.grade')
-            ->where('gaji_lembur.id_periode',$idPeriode)
-            ->orderBy('gaji_lembur.tgl','asc')
+            ->where('gaji_thr.id_periode',$yearsNow)
+            ->orderBy('gaji_thr.id_karyawan','asc')
             ->get();
    
-            $data['total'] = DB::table('gaji_lembur')
+            $data['total'] = DB::table('gaji_thr')
             ->select(
-               DB::raw("(FORMAT(SUM(gaji_lembur.nominal),2)) as nominal")
+               DB::raw("(FORMAT(SUM(gaji_thr.thr),2)) as nominal")
             )
-            ->where('gaji_lembur.id_periode',$idPeriode)
+            ->where('gaji_thr.id_periode',$yearsNow)
             ->first();
-       
-        }
-        return json_encode($data);
-    }
-
-    public function listData() {
-       // get ID Periode
-       $c_classPenggajian = new c_classPenggajian;
-       $_val = $c_classPenggajian->getPeriodeBerjalan(); 
-       if( is_null($_val))
-       {
-       // nothing
-       }
-       else
-       {
-           // get Data Periode
-           $periode = $_val;
-           $idPeriode=$periode->idPeriode;
-       
-           $data['data'] =  DB::table('gaji_lembur')
-            ->select(
-            'gaji_lembur.id as id',
-            'gaji_lembur.id_periode as idPeriode',
-            'departemen.departemen as id_departemen',
-            'departemen_sub.sub_departemen as subDepartemen',
-            'users.pos as pos',
-            'users.grade as grade',
-            'gaji_lembur.id_karyawan as id_absen',
-            'users.username as username',
-            'users.name as name',
-            'users.tipe_kontrak as tieKontrak',
-            'gaji_lembur.updated_at as updatedAt',
-            DB::raw('(sum(gaji_lembur.jam_lembur)) as jamLembur'),
-            DB::raw('(FORMAT(gaji_lembur.total_upah,2)) as totalUpah'),
-            DB::raw('(sum(gaji_lembur.total_jam)) as totalJam'),
-            DB::raw('(FORMAT(sum(gaji_lembur.nominal),2)) as nominal'),
-            'gaji_lembur.pic as pic')
-            ->join('users','users.id_absen','=','gaji_lembur.id_karyawan')
-            ->join('departemen','departemen.id_dept','=','gaji_lembur.id_dept')
-            ->join('departemen_sub','departemen_sub.id_subDepartemen','=','gaji_lembur.id_sub_dept')
-            ->where('gaji_lembur.id_periode',$idPeriode)
-            ->orderBy('gaji_lembur.id_karyawan','asc')
-            ->groupBy('gaji_lembur.id_karyawan')
-            ->get();
-
-         $data['total'] = DB::table('gaji_lembur')
-         ->select(
-            DB::raw("(FORMAT(SUM(gaji_lembur.nominal),2)) as nominal")
-         )
-         ->where('gaji_lembur.id_periode',$idPeriode)
-         ->first();
-        }
-        
         return json_encode($data);
     }
 
@@ -224,40 +119,26 @@ class c_penggajian_dataLembur extends Controller
             }
         }
 
-        public function imporDataLembur(Request $request) 
+        public function imporDataThr(Request $request) 
         {
             $username = request()->session()->get('username');
+            $yearsNow = Carbon::now()->format('Y');
             try{
-                // get ID Periode
-                $c_classPenggajian = new c_classPenggajian;
-                $_val = $c_classPenggajian->getPeriodeBerjalan(); 
-                if( is_null($_val))
-                {
-                // nothing
-                }
-                else
-                {
-                     // get Data Periode
-                     $periode = $_val;
-                     $idPeriode=$periode->idPeriode;
-
-                    // validasi
-                    $this->validate($request, [
-                        'file' => 'required|mimes:csv,xls,xlsx'
-                    ]);
-                
-                    // menangkap file excel
-                    $file = $request->file('file');
-                
-                    // membuat nama file unik
-                    $nama_file = rand().$file->getClientOriginalName();
-
-                    Excel::import(new penggajian_dataLembur_lemburKaryawan($idPeriode),$file);
-                }
+                // validasi
+                $this->validate($request, [
+                    'file' => 'required|mimes:csv,xls,xlsx'
+                ]);
             
-            return redirect('dashboard/penggajian/data-lembur');
+                // menangkap file excel
+                $file = $request->file('file');
+            
+                // membuat nama file unik
+                $nama_file = rand().$file->getClientOriginalName();
+
+                Excel::import(new penggajian_thr($yearsNow,$username),$file);
+                return redirect('dashboard/thr/input-thr');
             } catch (\Exception $ex) {
-                return response()->json([$ex]);
+                return $ex;
             }
         }
 
@@ -339,22 +220,6 @@ class c_penggajian_dataLembur extends Controller
                     $totalKaryawan=0;
                     foreach($jsonData['data'] as $x => $node)
                     {
-                  
-                        // "id_overtime" => "OT-9525-000000"
-                        // "departemen" => "Finance & Accounting"
-                        // "sub_departemen" => "Finance"
-                        // "grade" => "Officer"
-                        // "name" => "Sri Wahyuningsih"
-                        // "nik" => "02-0121-006"
-                        // "no_telephone" => "6285740112428"
-                        // "id_karyawan" => "9525"
-                        // "nip" => "-"
-                        // "tgl_pengajuan" => "2024-02-05 12:50:24"
-                        // "tgl_lembur" => "2024-02-05"
-                        // "jam_lembur" => "1.00"
-                        // "total_jam" => "0.00"
-                        // "status" => "1"
-                        // "keterangan" => "-"
                         $jamLembur=0;
                         $idOvertime = $node['id_overtime'];
                         $nik = $node['nik'];
