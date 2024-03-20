@@ -10,7 +10,7 @@ use Session;
 // use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\penggajian_thr;
-use App\Exports\export_penggajianLembur;
+use App\Exports\export_thr;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
@@ -70,54 +70,6 @@ class c_penggajian_thr extends Controller
         return json_encode($data);
     }
 
-    public function submit(Request $request) {
-            $userLogin = request()->session()->get('username');
-           
-            $_idKaryawan = $request->idKaryawan;
-            $_tglLembur = date('Y-m-d',strtotime($request->tglLembur));
-            $_jamLembur = $request->jamLembur;
-            $_keterangan = $request->keterangan;
-    
-            try {
-                DB::beginTransaction();
-                // get ID Periode
-                $c_classPenggajian = new c_classPenggajian;
-                $_val = $c_classPenggajian->getPeriodeBerjalan(); 
-                if( is_null($_val))
-                {
-                // nothing
-                }
-                else
-                {
-                    // get Data Periode
-                    $periode = $_val;
-                    $idPeriode=$periode->idPeriode;
-
-                    // Hitung Lembur Karyawan
-                    $c_classPenggajian = new c_classPenggajian;
-                    $_val = $c_classPenggajian->tambahLembur($idPeriode,$_idKaryawan,$_tglLembur,$_jamLembur, $_keterangan);
-
-                        // insert history
-                        $_keterangan = 'Tambah Lembur ID Periode : ' . $idPeriode . ' ID Karyawan : '. $_idKaryawan . ' Tanggal : '. $_tglLembur. ' Jam Lembur : '. $_jamLembur. ' Keterangan : '. $_keterangan;
-            
-                        $_requestValue['tipe'] = 0;
-                        $_requestValue['menu'] ='Penggajian';
-                        $_requestValue['module'] = 'Data Lembur';
-                        $_requestValue['keterangan'] = $_keterangan;
-                        $_requestValue['pic'] = $userLogin;
-
-                        $c_class = new c_classHistory;
-                        $c_class = $c_class->insertHistory($_requestValue);
-                }
-
-                DB::commit();
-          
-                return 'success';
-            } catch (\Exception $ex) {
-                DB::rollBack();
-                return response()->json($ex);
-            }
-        }
 
         public function imporDataThr(Request $request) 
         {
@@ -155,22 +107,22 @@ class c_penggajian_thr extends Controller
                             $_kar='-';
                             foreach($idData as $v)
                             {
-                                $dataKaryawan = DB::table('gaji_lembur')
+                                $dataKaryawan = DB::table('gaji_thr')
                                 ->where('id',$v)
                                 ->first();
-                          
-                                $c_classPenggajian = new c_classPenggajian;
-                                $c_classPenggajian = $c_classPenggajian->deleteLembur($dataKaryawan->id_periode,$dataKaryawan->id_karyawan,$v);
+                         
+                                $c_classTHR = new c_classTHR;
+                                $c_classTHR = $c_classTHR->deleteTHR($dataKaryawan->id_periode,$dataKaryawan->id_karyawan,$v);
                         
-                                $_kar = 'ID Karyawan : '. $dataKaryawan->id_karyawan.' Tanggal : '. $dataKaryawan->tgl.' Jam Lembur : '.$dataKaryawan->jam_lembur.'-'. $_kar;
+                                $_kar = 'ID Karyawan : '. $dataKaryawan->id_karyawan.' Periode : '. $dataKaryawan->id_periode .'-'. $_kar;
                             }
                             
-                            $_keterangan = 'Action-Remove CheckBox Data Lembur | Data : '.$_kar;
+                            $_keterangan = 'Action-Remove CheckBox Data THR | Data : '.$_kar;
                         }
                         // insert history
                         $_requestValue['tipe'] = 0;
                         $_requestValue['menu'] ='Penggajian';
-                        $_requestValue['module'] = 'Upah Karyawan';
+                        $_requestValue['module'] = 'Input THR';
                         $_requestValue['keterangan'] = $_keterangan;
                         $_requestValue['pic'] = $userLogin;
     
@@ -189,65 +141,8 @@ class c_penggajian_thr extends Controller
         {
             try
             {
-                DB::beginTransaction();
-
-                // get ID Periode
-                $c_classPenggajian = new c_classPenggajian;
-                $_val = $c_classPenggajian->getPeriodeBerjalan(); 
-                if( is_null($_val))
-                {
-                    // nothing
-
-                }
-                else
-                {
-                    // get Data Periode
-                    $periode = $_val;
-                    $idPeriode = $periode->idPeriode;
-                  
-                    // $tglAwal = $periode->tgl_awal;
-                    $tglAkhir = $periode->tgl_akhir;
-                    $tglAwal = '2024-02-01';
-                    $tglAkhir = '2024-02-28';
-                  
-                    // $c_calass = new c_classApi;
-                    // $_val = $c_calass->getUrlApi(); 
-                    // $_url= $_val.'get_request_overtime_karyawan?tanggal_awal='.$tglAwal.'&tanggal_akhir='.$tglAkhir;
-                    $_url= 'http://192.168.0.75:8092/api/get_request_overtime_karyawan?tanggal_awal='.$tglAwal.'&tanggal_akhir='.$tglAkhir;
-                    $response = Http::get($_url);
-                    $jsonData = $response->json();
-                
-                    $totalKaryawan=0;
-                    foreach($jsonData['data'] as $x => $node)
-                    {
-                        $jamLembur=0;
-                        $idOvertime = $node['id_overtime'];
-                        $nik = $node['nik'];
-                        $idKaryawan = $node['id_karyawan'];
-                        $tglLembur = $node['tgl_lembur'];
-                        $jamLembur = $node['jam_lembur'];
-                        $keterangan = $node['keterangan'];
-   
-                        // Hitung Lembur Karyawan
-                        $c_classPenggajian = new c_classPenggajian;
-                        $_val = $c_classPenggajian->tambahLembur($idPeriode,$idKaryawan,$tglLembur,$jamLembur, $keterangan);
-                    }
-
-                     // insert history
-                     $_keterangan = 'Tambah Lembur-Syncrinse From LOKARYAWAN ID Periode : ' . $idPeriode .' Periode : '. $periode->periode.' Tanggal Awal : '. $tglAwal. ' Tanggal Akhir : '. $tglAkhir;
-            
-                     $_requestValue['tipe'] = 0;
-                     $_requestValue['menu'] ='Penggajian';
-                     $_requestValue['module'] = 'Data Lembur';
-                     $_requestValue['keterangan'] = $_keterangan;
-                     $_requestValue['pic'] = 'system';
-                    
-                     $c_class = new c_classHistory;
-                     $c_class = $c_class->insertHistory($_requestValue);
-                    
-                     DB::commit();
-                    return 'success';
-                }   
+                DB::commit();
+                return 'success';    
             } catch (\Exception $ex) {
                 return response()->json($ex);
             }
@@ -255,14 +150,15 @@ class c_penggajian_thr extends Controller
 
         public function actionExport($_typeActionData,$_idData) {
             $userLogin = request()->session()->get('username');
+        
             try {
                 DB::beginTransaction();  
                 // get ID Periode
-                $c_classPenggajian = new c_classPenggajian;
-                $_val = $c_classPenggajian->getPeriodeBerjalan(); 
+                $c_classTHR = new c_classTHR();
+                $_val = $c_classTHR->getPeriodeBerjalan(); 
                 if( is_null($_val))
                 {
-                // nothing
+                    // nothing
                 }
                 else
                 {
@@ -270,7 +166,8 @@ class c_penggajian_thr extends Controller
                     $periode = $_val;
                     $idPeriode = $periode->idPeriode;
                 }
-                return Excel::download(new export_penggajianLembur($idPeriode,$_typeActionData,$_idData), 'Penggajian-Lembur-'.$_typeActionData.'-'.$periode->periode.'.xlsx');
+         
+                return Excel::download(new export_thr($idPeriode,$_typeActionData,$_idData), 'THR-'.$_typeActionData.'-'.$periode->periode.'.xlsx');
                 DB::commit();
                 return 'success';
             } catch (\Exception $ex) {
@@ -287,11 +184,11 @@ class c_penggajian_thr extends Controller
             try {
     
                  // get ID Periode
-                 $c_classPenggajian = new c_classPenggajian;
-                 $_val = $c_classPenggajian->getPeriodeBerjalan(); 
+                 $c_classTHR = new c_classTHR();
+                 $_val = $c_classTHR->getPeriodeBerjalan(); 
                  if( is_null($_val))
                  {
-                 // nothing
+                    // nothing
                  }
                  else
                  {

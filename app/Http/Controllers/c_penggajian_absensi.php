@@ -374,11 +374,11 @@ class c_penggajian_absensi extends Controller
                             {
                                 // update  Alfa
                                 $_nominalAlfa =0;
-                                $_nominalAlfa=$dtAbsensiHarian->tot_alfa*$_upahHarian;
+                                // $_nominalAlfa=$dtAbsensiHarian->tot_alfa*$_upahHarian; // request karyawan alfa tidak dipotong
 
                                 // update  Ijin
                                 $_nominalIjin =0;
-                                $_nominalIjin=$dtAbsensiHarian->tot_izin*$_upahHarian;
+                                // $_nominalIjin=$dtAbsensiHarian->tot_izin*$_upahHarian; // request karyawan ijin tidak dipotong
                             }
                               DB::table('gaji_karyawan_sub_variable')
                               ->where('id_periode',$idPeriode)

@@ -299,7 +299,7 @@ Route::middleware(['check.login'])->group(function () {
         Route::post('dashboard/penggajian/data-thr/import-thr', 'c_penggajian_thr@imporDataThr');
         Route::post('thr/input-thr/action', 'c_penggajian_thr@actionData');
         // Action Export
-        Route::get('dashboard/thr/input-thr/actionExport/{id}/{idData}', 'c_penggajian_thr@actionExport');
+        Route::get('thr/input-thr/actionExport/{id}/{idData}', 'c_penggajian_thr@actionExport');
         
     // Laporan 
         // Analisa-pph21

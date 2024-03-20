@@ -338,7 +338,7 @@
                     });
                 Swal.fire({
                     title: 'Hapus Data Terpilih?',
-                    text: "Semua Data Lembur yang Terpilih Akan dihapus",
+                    text: "Semua Data THR yang Terpilih Akan dihapus",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -347,7 +347,7 @@
                 }).then((result) => {
                     if (result.value) {
                         $.ajax({
-                            url: '{{ url('penggajian/data-lembur/action') }}',
+                            url: '{{ url('thr/input-thr/action') }}',
                             method: 'post',
                             data: {typeActionData: 'removeCheckBox',idData: array_select},
                             success: function (response) {
@@ -386,7 +386,7 @@
             // Action Export
             iExportAll.click(function (e) {
                 e.preventDefault();
-                window.open('{{ url('penggajian/data-lembur/actionExport') }}/' + 'exportAll/'+'-' );
+                window.open('{{ url('thr/input-thr/actionExport') }}/' + 'exportAll/'+'-' );
             });
             
             iExportSelectedCheckBox.click(function (e) {
@@ -409,7 +409,7 @@
                     array_select.push(rowId);
                     });
                 
-                window.open('{{ url('penggajian/data-lembur/actionExport') }}/' +'exportSelectedCheckBox/'+array_select);
+                window.open('{{ url('thr/input-thr/actionExport') }}/' +'exportSelectedCheckBox/'+array_select);
             });
             // End Action
     
