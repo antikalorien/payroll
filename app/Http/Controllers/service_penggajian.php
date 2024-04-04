@@ -161,6 +161,8 @@ class service_penggajian extends Controller
                     $user = $dtUser->first();
               
                     if (Crypt::decryptString($user->password) == $password) {
+                        $trn['karyawan'] = null;
+                        $trn['karyawan_thr'] = null;
 
                         // get karyawan
                         $trn['karyawan'] = DB::table('gaji_thr')
@@ -179,22 +181,28 @@ class service_penggajian extends Controller
                         ->join('departemen','departemen.id_dept','gaji_thr.id_departemen')
                         ->join('departemen_sub','departemen_sub.id_subDepartemen','gaji_thr.id_departemen_sub')
                         ->join('gaji_thr_periode','gaji_thr_periode.id_periode','gaji_thr.id_periode')
+                        ->where('gaji_thr.reff','<>','-')
+                        ->where('gaji_thr.reff_closing','<>','-')
                         ->where('gaji_thr.id_karyawan',$idKaryawan)
                         ->where('gaji_thr.nik',$nip)
                         ->where('gaji_thr.id_periode',$idPeriode)
                         ->first();
             
-                        // get data
-                        $trn['karyawan_thr'] = DB::table('gaji_thr_variable')
-                        ->select(
-                        'grouping_sub_variable.variable as variable',
-                        'gaji_thr_variable.nominal as nominal','gaji_thr_variable.keterangan as keterangan')
-                        ->join('grouping_sub_variable','grouping_sub_variable.id_variable','gaji_thr_variable.id_variable')
-                        ->where('gaji_thr_variable.id_karyawan',$idKaryawan)
-                        ->where('gaji_thr_variable.id_periode',$idPeriode)
-                        ->orderBy('gaji_thr_variable.id_variable','asc')
-                        ->get();
-
+                        if($trn['karyawan']!=null)
+                        {
+                            // get data
+                            $trn['karyawan_thr'] = DB::table('gaji_thr_variable')
+                            ->select(
+                            'grouping_sub_variable.variable as variable',
+                            'gaji_thr_variable.nominal as nominal','gaji_thr_variable.keterangan as keterangan')
+                            ->join('grouping_sub_variable','grouping_sub_variable.id_variable','gaji_thr_variable.id_variable')
+                            ->where('gaji_thr_variable.id_karyawan',$idKaryawan)
+                            ->where('gaji_thr_variable.id_periode',$idPeriode)
+                            ->orderBy('gaji_thr_variable.id_variable','asc')
+                            ->where('gaji_thr_variable.reff','<>','-')
+                            ->get();
+                        }
+                        
                         $result=response()->json([
                             'status' => 'success',
                             'message' => 'Get Data THR Successfuly',
@@ -202,7 +210,7 @@ class service_penggajian extends Controller
                         ]);
                       
                         } else {
-                        $result = 'Password salah.';
+                            $result = 'Password salah.';
                         }
                 } else {
                     $result = 'Username / ID Karyawan tidak terdaftar.';

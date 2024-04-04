@@ -205,32 +205,24 @@
                 e.preventDefault();
                 let tables = $('#listTable').DataTable();
                     Swal.fire({
-                    title: 'Data Lembur',
-                    text: 'Reff : '+ iPic.val(),
-                    input: 'checkbox',
-                    inputValue:0,
-                    icon: 'question',
-                    inputPlaceholder:
-                        'Saya Sudah Memastikan Data Benar.',
-                    confirmButtonText:
-                        'Continue <i class="fa fa-arrow-right"></i>',
-                    inputValidator: (result) => {
-                        return !result && 'You need to agree with T&C'
-                    }
+                    icon: 'warning',
+                    title: 'Lock THR',
+                    inputLabel: 'Reff : '+ iPic.val(),
+                    text: "Periode THR Akan Terkunci dan Tidak Dapat di Edit Kembali",
+                    input: 'password',
+                        inputLabel: 'Password',
+                        inputPlaceholder: 'Enter your password',
+                        inputAttributes: {
+                            maxlength: 15,
+                            autocapitalize: 'off',
+                            autocorrect: 'off'
+                        },
                 }).then((result) => {
                     if (result.value) {
-                        Swal.fire({
-                        title: 'Mohon Ditunggu !',
-                        html: 'sedang memproses data...',// add html attribute if you want or remove
-                            allowOutsideClick: false,
-                            onBeforeOpen: () => {
-                        Swal.showLoading()
-                        },
-                        });
                         $.ajax({
-                            url: '{{ url('penggajian/data-lembur/submitModule') }}',
+                            url: '{{ url('thr/submitModule') }}',
                             method: 'post',
-                            data: {idModule: 'GG-004'},
+                            data: {password:result.value},
                             success: function (response) {
                                 if (response === 'success') {
                                     Swal.fire({
@@ -238,7 +230,7 @@
                                         title: 'Berhasil',
                                         text: 'Data Berhasil ditambahkan',
                                         onClose(modalElement) {
-                                            window.location = '{{ url('dashboard/penggajian/generate-gaji') }}';
+                                            window.location = '{{ url('dashboard') }}';
                                         }
                                     });
                                 } else {

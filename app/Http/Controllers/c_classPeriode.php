@@ -73,4 +73,46 @@ class c_classPeriode extends Controller
                return response()->json($ex);
            }
     }
+
+    public function lockStatusPeriodeTHR($_pic)
+    {
+        try {
+            // get periode active
+            $dt = DB::table('gaji_thr_periode')
+            ->select('id_periode')
+            ->where('pic','-')
+            ->first();
+            $_idPeriode = $dt->id_periode;
+            
+            // Update Table gaji thr periode
+            DB::table('gaji_thr_periode')
+            ->where('id_periode',$_idPeriode)
+            ->update([
+                'pic' => $_pic,
+            ]);
+
+            // Update Table gaji thr
+            DB::table('gaji_thr')
+            ->where('id_periode',$_idPeriode)
+            ->update([
+                'reff_closing' => $_pic,
+            ]);
+
+            $result='success';
+
+            return $result;
+           } catch (\Exception $ex) {
+                 // insert history
+                 $_keterangan = 'Error--updatePeriode--'.$ex;
+                 $_requestValue['tipe'] = 0;
+                 $_requestValue['menu'] ='Periode';
+                 $_requestValue['module'] = 'Class Periode';
+                 $_requestValue['keterangan'] = $_keterangan;
+                 $_requestValue['pic'] = $_pic;
+ 
+                 $c_class = new c_classHistory;
+                 $c_class = $c_class->insertHistory($_requestValue);  
+               return response()->json($ex);
+           }
+    }
 }

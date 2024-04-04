@@ -34,7 +34,12 @@ class c_penggajian_thr extends Controller
 
     public function data() {
         // get ID Periode
-        $yearsNow = Carbon::now()->format('Y');
+         // get periode active
+         $dt = DB::table('gaji_thr_periode')
+         ->select('id_periode')
+         ->where('pic','-')
+         ->first();
+         $_idPeriode = $dt->id_periode;
         
         $data['data'] =  DB::table('gaji_thr')
            ->select(
@@ -57,7 +62,7 @@ class c_penggajian_thr extends Controller
             ->join('departemen','departemen.id_dept','users.id_departemen')
             ->join('departemen_sub','departemen_sub.id_subDepartemen','users.id_departemen_sub')
             ->join('grade','grade.id_grade','users.grade')
-            ->where('gaji_thr.id_periode',$yearsNow)
+            ->where('gaji_thr.id_periode',$_idPeriode)
             ->orderBy('gaji_thr.id_karyawan','asc')
             ->get();
    
@@ -65,7 +70,7 @@ class c_penggajian_thr extends Controller
             ->select(
                DB::raw("(FORMAT(SUM(gaji_thr.thr),2)) as nominal")
             )
-            ->where('gaji_thr.id_periode',$yearsNow)
+            ->where('gaji_thr.id_periode',$_idPeriode)
             ->first();
         return json_encode($data);
     }
@@ -175,47 +180,42 @@ class c_penggajian_thr extends Controller
                 return json_encode([$ex]);
             }
         }
+        
 
         public function submitModule(Request $request)
         {
-            $userLogin = request()->session()->get('username');
-            $idModule = $request->idModule;
-    
-            try {
-    
-                 // get ID Periode
-                 $c_classTHR = new c_classTHR();
-                 $_val = $c_classTHR->getPeriodeBerjalan(); 
-                 if( is_null($_val))
-                 {
-                    // nothing
-                 }
-                 else
-                 {
-                     // get Data Periode
-                     $periode = $_val;
-                     $idPeriode = $periode->idPeriode;
-                 }
-                $c_classPeriode = new c_classPeriode;
-                $c_classPeriode = $c_classPeriode->updateStatusPeriode($idPeriode,$idModule,$userLogin);
-                $_keterangan = 'Submit Module Lembur karyawan ID Periode : ' . $periode->idPeriode . ' ('.$periode->periode.')';
+        $userLogin = request()->session()->get('username');
+        $password = $request->password;
 
-                $c_classPenggajian = new c_penggajian_paycheck;
-                $c_classPenggajian = $c_classPenggajian->hitungThp();
+        try {
+
+             // get Credentials
+             $c_classCredentials = new c_classCredentials;
+             $_credentials = $c_classCredentials->getCredentials($password); 
            
-                 // insert history        
-                 $_requestValue['tipe'] = 0;
-                 $_requestValue['menu'] ='Penggajian';
-                 $_requestValue['module'] = 'Upah Karyawan';
-                 $_requestValue['keterangan'] = $_keterangan;
-                 $_requestValue['pic'] = $userLogin;
-    
-                 $c_class = new c_classHistory;
-                 $c_class = $c_class->insertHistory($_requestValue);
-                 return 'success';
-               } catch (\Exception $ex) {
-                   return response()->json($ex);
-               }
+             if($_credentials=='success')
+             {
+                $c_classPeriode = new c_classPeriode;
+                $c_classPeriode = $c_classPeriode->lockStatusPeriodeTHR($userLogin);
+
+                $_keterangan = 'Submit Lock THR';      
+                // insert history        
+                $_requestValue['tipe'] = 0;
+                $_requestValue['menu'] ='THR';
+                $_requestValue['module'] = 'Input THR';
+                $_requestValue['keterangan'] = $_keterangan;
+                $_requestValue['pic'] = $userLogin;
+
+                $c_class = new c_classHistory;
+                $c_class = $c_class->insertHistory($_requestValue);
+             }
+             else
+             {
+                 return $_credentials;
+             }
+            return 'success';
+        } catch (\Exception $ex) {
+            return response()->json($ex);
         }
-     
+    }
 }

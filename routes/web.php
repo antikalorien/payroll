@@ -298,6 +298,7 @@ Route::middleware(['check.login'])->group(function () {
         Route::get('dashboard/thr/input-thr-importExcel', 'c_penggajian_thr@importLembur');
         Route::post('dashboard/penggajian/data-thr/import-thr', 'c_penggajian_thr@imporDataThr');
         Route::post('thr/input-thr/action', 'c_penggajian_thr@actionData');
+        Route::post('thr/submitModule', 'c_penggajian_thr@submitModule');
         // Action Export
         Route::get('thr/input-thr/actionExport/{id}/{idData}', 'c_penggajian_thr@actionExport');
         
