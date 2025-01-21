@@ -323,19 +323,17 @@ class c_penggajian_dataLembur extends Controller
                     // get Data Periode
                     $periode = $_val;
                     $idPeriode = $periode->idPeriode;
-                  
-                    // $tglAwal = $periode->tgl_awal;
+                
+                    $tglAwal = $periode->tgl_awal;
                     $tglAkhir = $periode->tgl_akhir;
-                    $tglAwal = '2024-02-01';
-                    $tglAkhir = '2024-02-28';
                   
-                    // $c_calass = new c_classApi;
-                    // $_val = $c_calass->getUrlApi(); 
-                    // $_url= $_val.'get_request_overtime_karyawan?tanggal_awal='.$tglAwal.'&tanggal_akhir='.$tglAkhir;
-                    $_url= 'http://192.168.0.75:8092/api/get_request_overtime_karyawan?tanggal_awal='.$tglAwal.'&tanggal_akhir='.$tglAkhir;
+                    $c_calass = new c_classApi;
+                    $_val = $c_calass->getUrlApi(); 
+                    $_url= 'https://servicelokaryawan.salokapark.app/api/get_request_overtime_karyawan?tanggal_awal='.$tglAwal.'&tanggal_akhir='.$tglAkhir.'&status=1';
+                    // $_url= 'http://192.168.0.75:8092/api/get_request_overtime_karyawan?tanggal_awal='.$tglAwal.'&tanggal_akhir='.$tglAkhir;
                     $response = Http::get($_url);
                     $jsonData = $response->json();
-                
+               
                     $totalKaryawan=0;
                     foreach($jsonData['data'] as $x => $node)
                     {
@@ -362,7 +360,7 @@ class c_penggajian_dataLembur extends Controller
                         $tglLembur = $node['tgl_lembur'];
                         $jamLembur = $node['jam_lembur'];
                         $keterangan = $node['keterangan'];
-   
+                    
                         // Hitung Lembur Karyawan
                         $c_classPenggajian = new c_classPenggajian;
                         $_val = $c_classPenggajian->tambahLembur($idPeriode,$idKaryawan,$tglLembur,$jamLembur, $keterangan);

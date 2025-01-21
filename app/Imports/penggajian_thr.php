@@ -36,7 +36,7 @@ class penggajian_thr implements ToModel,WithHeadingRow
 
         try {
             DB::beginTransaction();
-
+            $data='';
             if($row['id']!='S01')
             {      
                 $idPeriode = $row['id_periode']; 
@@ -48,14 +48,14 @@ class penggajian_thr implements ToModel,WithHeadingRow
                 $gajiPokok = $row['gaji_pokok']; // VR-001
                 $tunjanganJabatan = $row['tunjangan_jabatan']; // VR-002
                 $tunjanganKeahlian = $row['tunjangan_keahlian']; // VR-003
-
+                $data=$row;
                 // get Data Users
                 $dtUser = DB::table('users')
                 ->select('id_departemen','id_departemen_sub','id_absen','no_rekening','masa_kerja')
                 ->where('username',$nip)
                 ->orderBy('id','desc')
                 ->first();
-
+                
                 $idKaryawan = $dtUser->id_absen;
                 $idDepartemen = $dtUser->id_departemen;
                 $idDepartemenSub = $dtUser->id_departemen_sub;
@@ -117,7 +117,6 @@ class penggajian_thr implements ToModel,WithHeadingRow
         DB::commit();
     } catch (\Exception $ex) {
         DB::rollBack();
-        dd($ex);
         return response()->json($ex);
     }
     }

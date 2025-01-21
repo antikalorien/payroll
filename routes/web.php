@@ -288,6 +288,17 @@ Route::middleware(['check.login'])->group(function () {
 
         Route::get('dashboard/penggajian/paycheck/cekThp', 'c_penggajian_paycheck@hitungThp');
         Route::post('penggajian/paycheck/submitModule', 'c_penggajian_paycheck@submitModule');
+
+         // Data Penggajian
+         Route::get('dashboard/penggajian/data-penggajian', 'c_penggajian_dataPenggajian@index');
+         Route::get('dashboard/penggajian/data-penggajian/absensi/list', 'c_penggajian_dataPenggajian@absensiList');
+         Route::get('dashboard/penggajian/data-penggajian/lembur/list', 'c_penggajian_dataPenggajian@lemburList');
+         Route::get('dashboard/penggajian/data-penggajian/bpjs/list', 'c_penggajian_dataPenggajian@bpjsList');
+         Route::get('dashboard/penggajian/data-penggajian/bpjs/paycheck', 'c_penggajian_dataPenggajian@payCheckList');
+
+         // Data Master
+         Route::get('dashboard/master/master-data', 'c_master_dataMaster@index');
+
         
     // THR
         Route::get('dashboard/thr/input-thr', 'c_penggajian_thr@index');
