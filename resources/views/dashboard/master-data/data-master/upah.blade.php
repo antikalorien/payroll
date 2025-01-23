@@ -34,7 +34,7 @@
 </div>
 <!-- Form Import Upah End -->
 
-<!-- Form Import Upah Start -->
+<!-- Form Edit Upah Start -->
 <div id="formEditUpah" class="card border" style="display:none;">
     <div class="card-header">
         <h4>Edit Upah Karyawan</h4>
@@ -42,12 +42,99 @@
     <form id="formData">
         <div class="modal-body">
             <div class="form-group">
+                <label for="status">Status Karyawan</label>
+                <select style="width: 100%" id="iStatusKaryawan" name="statusKaryawan" required></select>
+            </div>
+            <div class="form-group">
+                <label for="dept">Departemen</label>
+                <select style="width: 100%" id="iDepartemenUser" name="departemen" required></select>
+            </div>
+
+            <div class="form-group">
+                <label for="sub-dept">Sub Departemen</label>
+                <select style="width: 100%" id="iSubDepartemen" name="subDepartemen" required></select>
+            </div>
+            <div class="form-group">
+                <label>Pos</label>
+                <input name="pos" type="text" class="form-control" autofocus>
+            </div>
+            <div class="form-group">
+                <label for="grade">Grade</label>
+                <select style="width: 100%" id="iGrade" name="grade" required></select>
+            </div>
+            <div class="form-group">
+                <label>ID Absen (4 digit)</label>
+                <input name="idAbsen" type="text" class="form-control" autofocus>
+            </div>
+            <div class="form-group">
+                <label>NIP</label>
+                <input name="username" type="text" class="form-control" autofocus>
+                <small>Password untuk user baru sama dengan NIP. Setiap user dapat mengganti password melalui menu User
+                    Profile.</small>
+            </div>
+            <div class="form-group">
+                <label for="provi">Nama Karyawan</label>
+                <select style="width: 100%" id="iNamaKaryawan" name="idKaryawan" required></select>
+            </div>
+            <div class="form-group">
+                <label for="tipe">Type Kontrak</label>
+                <select style="width: 100%" id="iTipeKontrak" name="tipe" required></select>
+            </div>
+            <div class="form-group">
+                <label for="iTglDOJ">DOJ</label>
+                <input type="text" id="iTglDOJ" name="tglDOJ" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Masa Kerja</label>
+                <input name="masaKerja" type="text" class="form-control">
+            </div>
+            <div class="form-group">
                 <label>No Rekening</label>
                 <input name="nominalTnjTransport" type="text" class="form-control">
             </div>
             <div class="form-group">
+                <label for="tipe">Skema BPJS</label>
+                <select style="width: 100%" id="iSkemaBPJS" name="tipe" required></select>
+            </div>
+            <div class="form-group">
+                <label for="tipe">Tipe Penggajian</label>
+                <select style="width: 100%" id="iTipePenggajian" name="tipe" required></select>
+            </div>
+            <div class="form-group">
                 <label>Gaji Pokok</label>
                 <input name="intervalBulan" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Jabatan</label>
+                <input name="intervalBulan" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Keahlian</label>
+                <input name="intervalBulan" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Transport</label>
+                <input name="intervalBulan" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Komunikasi</label>
+                <input name="intervalBulan" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Tambahan Lainnya</label>
+                <input name="intervalBulan" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>BPJS Kesehatan</label>
+                <input name="tenor" type="text" class="form-control" autofocus>
+            </div>
+            <div class="form-group">
+                <label>BPJS TK</label>
+                <input name="nominal" type="text" class="form-control" autofocus>
+            </div>
+            <div class="form-group">
+                <label>BPJS JP</label>
+                <input name="tenor" type="text" class="form-control" autofocus>
             </div>
         </div>
         <div class="card-footer bg-whitesmoke">
@@ -65,7 +152,7 @@
         </div>
     </form>
 </div>
-<!-- Form Import Upah End -->
+<!-- Form Edit Upah End -->
 
 <button type="button" id="iImportUpah" class="btn btn-success w-auto mb-3">
     <i class="fas fa-plus mr-2"></i>Import
@@ -200,6 +287,7 @@ function loadUpah() {
 // hide and show form import upah
 function showImportUpah() {
     document.getElementById("formImportUpah").style.display = "block";
+    document.getElementById("formEditUpah").style.display = "none";
 }
 
 function hideImportUpah() {
@@ -219,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // hide and show edit upah
 function showEditUpah() {
     document.getElementById("formEditUpah").style.display = "block";
+    document.getElementById("formImportUpah").style.display = "none";
 }
 
 function hideEditUpah() {

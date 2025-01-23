@@ -5,14 +5,13 @@
     </div>
     <form id="formData">
         <div class="modal-body">
-            <label for="dept">Departemen</label>
             <div class="form-group">
+                <label for="dept">Departemen</label>
                 <select style="width: 100%" id="iDepartemenUser" name="departemen" required></select>
             </div>
 
-            <label for="sub-dept">Sub Departemen</label>
             <div class="form-group">
-
+                <label for="sub-dept">Sub Departemen</label>
                 <select style="width: 100%" id="iSubDepartemen" name="subDepartemen" required></select>
             </div>
 
@@ -21,8 +20,8 @@
                 <input name="pos" type="text" class="form-control" autofocus>
             </div>
 
-            <label for="grade">Grade</label>
             <div class="form-group">
+                <label for="grade">Grade</label>
                 <select style="width: 100%" id="iGrade" name="grade" required></select>
             </div>
 
@@ -95,14 +94,13 @@
     </div>
     <form id="formData">
         <div class="modal-body">
-            <label for="dept">Departemen</label>
             <div class="form-group">
+                <label for="dept">Departemen</label>
                 <select style="width: 100%" id="iDepartemenUser" name="departemen" required></select>
             </div>
 
-            <label for="sub-dept">Sub Departemen</label>
             <div class="form-group">
-
+                <label for="sub-dept">Sub Departemen</label>
                 <select style="width: 100%" id="iSubDepartemen" name="subDepartemen" required></select>
             </div>
 
@@ -111,8 +109,8 @@
                 <input name="pos" type="text" class="form-control" autofocus>
             </div>
 
-            <label for="grade">Grade</label>
             <div class="form-group">
+                <label for="grade">Grade</label>
                 <select style="width: 100%" id="iGrade" name="grade" required></select>
             </div>
 
@@ -137,8 +135,8 @@
                 <input name="email" type="text" class="form-control">
             </div>
 
-            <label for="skema">Skema Hari Kerja</label>
             <div class="form-group">
+                <label for="skema">Skema Hari Kerja</label>
                 <select style="width: 100%" id="iSkemaHariKerja_1" required></select>
             </div>
 
@@ -298,7 +296,6 @@
         </tbody>
     </table>
 </div>
-</div>
 
 <script>
 function loadUserManagement() {
@@ -362,26 +359,14 @@ function loadUserManagement() {
             format: 'DD MMMM YYYY'
         }
     });
-
-    $('#iSkemaHariKerja_1').select2({
-        ajax: {
-            url: '{{ url("skema_hariKerja") }}',
-            dataType: 'json',
-            data: function(params) {
-                return {
-                    search: params.term
-                };
-            }
-        }
-    });
-
-
 }
 
 
 // hide and show form add user
 function showFormAddUser() {
     document.getElementById("formAddUser").style.display = "block";
+    document.getElementById("formEditUser").style.display = "none";
+    document.getElementById("formImportUser").style.display = "none";
 }
 
 function hideFormAddUser() {
@@ -401,6 +386,8 @@ document.addEventListener("DOMContentLoaded", function() {
 // hide and show form add user
 function showFormEditUser() {
     document.getElementById("formEditUser").style.display = "block";
+    document.getElementById("formAddUser").style.display = "none";
+    document.getElementById("formImportUser").style.display = "none";
 }
 
 function hideFormEditUser() {
@@ -420,6 +407,8 @@ document.addEventListener("DOMContentLoaded", function() {
 // hide and show form import user
 function showFormImportUser() {
     document.getElementById("formImportUser").style.display = "block";
+    document.getElementById("formAddUser").style.display = "none";
+    document.getElementById("formEditUser").style.display = "none";
 }
 
 function hideFormImportUser() {

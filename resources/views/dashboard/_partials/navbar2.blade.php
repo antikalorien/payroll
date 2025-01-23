@@ -1,23 +1,29 @@
 <nav class="navbar navbar-expand-lg main-navbar">
     <form class="form-inline mr-auto">
         <ul class="navbar-nav mr-3">
-            <li><a href="#" data-toggle="sidebar" id="sidebarToggle" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
-{{--            @yield('page_menu')--}}
+            <li><a href="#" data-toggle="sidebar" id="sidebarToggle" class="nav-link nav-link-lg"><i
+                        class="fas fa-bars"></i></a></li>
+            {{--            @yield('page_menu')--}}
             @if(!in_array(request()->segment(2),[null,'profile']) && !in_array(request()->segment(3),['tiket-offline']))
-                {{-- <li class="nav-item {{ (request()->segment(4) == null) ? 'active' : '' }}">
-                    <a href="{{ url(request()->segment(1).'/'.request()->segment(2).'/'.request()->segment(3)) }}" class="nav-link">
-                        <i class="fas fa-plus-circle mr-2" style="color: #ffffff; font-size: x-large; vertical-align: middle;"></i>
-                        <div class="d-none d-lg-inline-block d-xl-inline-block">Tambah {{ ucfirst(request()->segment(3)) }}</div>
-                    </a>
-                </li>
-                <li class="nav-item {{ (request()->segment(4) == 'list') ? 'active' : '' }}">
-                    <a href="{{ url(request()->segment(1).'/'.request()->segment(2).'/'.request()->segment(3)) }}/list" class="nav-link">
-                        <i class="fas fa-table mr-2" style="color: #ffffff; font-size: x-large; vertical-align: middle;"></i>
-                        <span class="d-none d-lg-inline-block d-xl-inline-block">
-                             Daftar {{ ucfirst(request()->segment(3)) }}
-                        </span>
-                    </a>
-                </li> --}}
+            {{-- <li class="nav-item {{ (request()->segment(4) == null) ? 'active' : '' }}">
+            <a href="{{ url(request()->segment(1).'/'.request()->segment(2).'/'.request()->segment(3)) }}"
+                class="nav-link">
+                <i class="fas fa-plus-circle mr-2"
+                    style="color: #ffffff; font-size: x-large; vertical-align: middle;"></i>
+                <div class="d-none d-lg-inline-block d-xl-inline-block">Tambah {{ ucfirst(request()->segment(3)) }}
+                </div>
+            </a>
+            </li>
+            <li class="nav-item {{ (request()->segment(4) == 'list') ? 'active' : '' }}">
+                <a href="{{ url(request()->segment(1).'/'.request()->segment(2).'/'.request()->segment(3)) }}/list"
+                    class="nav-link">
+                    <i class="fas fa-table mr-2"
+                        style="color: #ffffff; font-size: x-large; vertical-align: middle;"></i>
+                    <span class="d-none d-lg-inline-block d-xl-inline-block">
+                        Daftar {{ ucfirst(request()->segment(3)) }}
+                    </span>
+                </a>
+            </li> --}}
             @endif
         </ul>
     </form>

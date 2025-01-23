@@ -6,11 +6,11 @@
         <div class="col-12">
             <div class="bg-white p-4 rounded shadow">
                 <!-- Tabs Navs -->
-                <ul class="nav nav-tabs mb-3" id="ex-with-icons" role="tablist">
+                <ul class="nav nav-tabs nav-fill mb-3" id="ex-with-icons" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="tab-grade" href="#master-tab-1" role="tab"
                             aria-controls="master-tab-1" aria-selected="true">
-                            <i class="fas fa-chart-line fa-fw me-2"></i>Grade
+                            <i class="fas fa-chart-line fa-fw me-2" style="font-size: 1rem;"></i>Grade
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -22,13 +22,13 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="tab-upah-karyawan" href="#master-tab-3" role="tab"
                             aria-controls="master-tab-3" aria-selected="false">
-                            <i class="fas fa-dollar-sign fa-fw me-2"></i>Upah Karyawan
+                            <i class="fas fa-file-invoice-dollar fa-fw me-2" style="font-size: 1rem;"></i>Upah Karyawan
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="tab-hutang" href="#master-tab-4" role="tab" aria-controls="master-tab-4"
                             aria-selected="false">
-                            <i class="fas fa-dollar-sign fa-fw me-2"></i>Hutang
+                            <i class="fas fa-file-invoice-dollar fa-fw me-2" style="font-size: 1rem;"></i>Hutang
                         </a>
                     </li>
                 </ul>
@@ -59,7 +59,7 @@
 @section('script')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('.nav-link');
+    const tabs = document.querySelectorAll('.nav-tabs .nav-link');
 
     // Fungsi untuk memuat skrip berdasarkan tab
     function loadTabScriptMaster(tabId) {

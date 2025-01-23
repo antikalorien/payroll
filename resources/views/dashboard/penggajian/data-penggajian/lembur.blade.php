@@ -5,9 +5,9 @@
     </div>
     <form id="formData">
         <div class="modal-body">
-            <label for="provi">Nama Karyawan</label>
             <div class="form-group">
-                <select style="width: 100%" id="iNamaKaryawan" name="idKaryawan" required></select>
+                <label for="provi">Nama Karyawan</label>
+                <select style="width: 100   %" id="iNamaKaryawan" name="idKaryawan" required></select>
             </div>
 
             <div class="form-group">
@@ -49,8 +49,8 @@
     </div>
     <form id="formData">
         <div class="modal-body">
-            <label for="provi">Nama Karyawan</label>
             <div class="form-group">
+                <label for="provi">Nama Karyawan</label>
                 <select style="width: 100%" id="iEditNamaKaryawanLembur" name="idKaryawan" required></select>
             </div>
 
@@ -87,12 +87,12 @@
 <!-- Form Edit Lembur End -->
 
 <!-- Form Import Lembur Start -->
-<div id="importLembur" class="card border" style="display:none;">
+<div id="importLembur" class="card" style="display:none;">
+    <div class="card-header mb-3">
+        <h4>Import Data</h4>
+    </div>
     <div class="card-body pt-0 pb-0">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Import Data</h5>
-            </div>
 
             <div class="modal-body">
                 <form method="post" action="#" enctype="multipart/form-data">
@@ -136,7 +136,7 @@
         </select>
 
         <div class="dropdown ms-auto ml-3">
-            <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+            <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown">
                 ACTION
             </button>
             <div class="dropdown-menu">
@@ -316,6 +316,8 @@ function loadLembur() {
 // hide and show form tambah lembur
 function showOvertimeForm() {
     document.getElementById("overtimeForm").style.display = "block";
+    document.getElementById("importLembur").style.display = "none";
+    document.getElementById("formEditLembur").style.display = "none";
 }
 
 function hideOvertimeForm() {
@@ -336,6 +338,8 @@ document.addEventListener("DOMContentLoaded", function() {
 // hide and show form edit lembur
 function showFormEditLembur() {
     document.getElementById("formEditLembur").style.display = "block";
+    document.getElementById("overtimeForm").style.display = "none";
+    document.getElementById("importLembur").style.display = "none";
 }
 
 function hideFormEditLembur() {
@@ -355,6 +359,9 @@ document.addEventListener("DOMContentLoaded", function() {
 // hide and show form import lembur
 function showImportForm() {
     document.getElementById("importLembur").style.display = "block";
+    document.getElementById("overtimeForm").style.display = "none";
+    document.getElementById("formEditLembur").style.display = "none";
+
 }
 
 function hideImportForm() {

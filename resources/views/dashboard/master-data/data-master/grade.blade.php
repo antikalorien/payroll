@@ -142,6 +142,7 @@ function loadGrade() {
 // hide and show form add grade
 function showFormAddGrade() {
     document.getElementById("formAddGrade").style.display = "block";
+    document.getElementById("formEditGrade").style.display = "none";
 }
 
 function hideFormAddGrade() {
@@ -161,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // hide and show form edit grade
 function showFormEditGrade() {
     document.getElementById("formEditGrade").style.display = "block";
+    document.getElementById("formAddGrade").style.display = "none";
 }
 
 function hideFormEditGrade() {
