@@ -258,11 +258,11 @@
         <tbody>
             <tr>
                 <td></td>
-                <td><span class="badge bg-success text-dark">
+                <td class="sticky-col first-col"><span class="badge bg-success text-dark">
                         Active
                     </span></td>
-                <td>IT</td>
-                <td>Aplikasi & System</td>
+                <td class="sticky-col second-col">IT</td>
+                <td class="sticky-col third-col">Aplikasi & System</td>
                 <td>Aplikasi & System</td>
                 <td>LV-001</td>
                 <td>1708</td>

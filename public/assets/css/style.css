@@ -4055,6 +4055,23 @@ body:not(.sidebar-mini)
     background-color: #fff;
 }
 
+.sticky-col {
+    position: sticky;
+    background-color: #fff;
+}
+
+.first-col {
+    left: 0px;
+}
+
+.second-col {
+    left: 80px;
+}
+
+.third-col {
+    left: 120px;
+}
+
 @media (max-width: 1024px) {
     .sidebar-gone-hide {
         display: none !important;
